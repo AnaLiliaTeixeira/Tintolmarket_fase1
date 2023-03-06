@@ -16,7 +16,7 @@ public class User {
 	private String name;
 	private int balance;
 	private HashMap<String, List<String>> inbox;
-	private HashMap<Wine, Integer> wines;
+	private List<Wine> wines;
 
 	public User(String name) throws IOException {
 		this.name = name;
@@ -29,7 +29,7 @@ public class User {
 			this.balance = 200;
 			bw.append(balance + "\r\n");
 			this.inbox = new HashMap<>();
-			this.wines = new HashMap<>();
+			this.wines = new ArrayList<>();
 			bw.close();
 			fw.close();
 		} else { // se user ja existe
@@ -79,15 +79,36 @@ public class User {
 	/**
 	 * @return the wines
 	 */
-	public HashMap<Wine, Integer> getWines() {
+	public List<Wine> getWines() {
 		return wines;
 	}
 
-	public void addWine(Wine wine, int quantity) {
-		if (wines.containsKey(wine))
-			wines.put(wine, wines.get(wine) + quantity);
-		else
-			wines.put(wine, quantity);
+	public boolean addWine(String name, File image) {
+		for (Wine w : wines)
+			if (w.getName().equals(name))
+				return false;
+		wines.add(new Wine(name, image));
+		return true;
+	}
+
+	public boolean sell(String name, double value, int quantity) {
+		for (Wine w : wines) {
+			if (w.getName().equals(name)) {
+				w.setPrice(value);
+				w.setQuantityForSale(quantity);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public boolean view(String name) {
+		for (Wine w : wines) {
+			if (w.getName().equals(name)) {
+
+			}
+		}
+		return false;
 	}
 
 	public boolean talk(String recipient, String message) throws IOException {
