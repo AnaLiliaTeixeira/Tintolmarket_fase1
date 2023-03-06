@@ -1,24 +1,35 @@
 package application;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 import entities.User;
+import entities.UserCatalog;
+import entities.WineCatalog;
 
 public class MainServer {
 
-//	private static List<User> users; 
+	private static UserCatalog userCatalog;
+	private static WineCatalog wineCatalog;
 
 	public static void main(String[] args) {
 
 //		users = new ArrayList<>();
 		ServerSocket serverSocket = null;
-
+		
+		// Create Users and Wines Catalog
+		try {
+			userCatalog = new UserCatalog();
+			wineCatalog = new WineCatalog();
+		} catch (IOException e1) {
+			System.out.println("Error creating a Catalog.");
+			e1.printStackTrace();
+		}
+		
 		try { // criar socket
 			if (args != null)
 				serverSocket = new ServerSocket(Integer.parseInt(args[0]));
@@ -31,7 +42,7 @@ public class MainServer {
 		try { // handler de cada cliente
 			while (true) {
 				Socket socket = serverSocket.accept();
-				ServerThread st = new ServerThread(socket);
+				ServerThread st = new ServerThread(socket, userCatalog);
 				st.start();
 			}
 		} catch (Exception e) {
@@ -53,9 +64,12 @@ class ServerThread extends Thread {
 	private Socket socket;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
+	private UserCatalog userCatalog;
+	private WineCatalog wineCatalog;
 
-	public ServerThread(Socket inSoc) {
+	public ServerThread(Socket inSoc, UserCatalog userCatalog) {
 		this.socket = inSoc;
+		this.userCatalog = userCatalog;
 	}
 
 	public void run() {
@@ -65,7 +79,7 @@ class ServerThread extends Thread {
 			out = new ObjectOutputStream(socket.getOutputStream());
 
 			// fazer login do user
-			String name = login();
+			String name = userCatalog.login(in, out);
 			if (name != null)
 				interact(new User(name));
 
@@ -78,46 +92,6 @@ class ServerThread extends Thread {
 		}
 	}
 
-	/**
-	 * Faz login do utilizador ou cria um utilizador novo
-	 * 
-	 * @return o username se login com sucesso ou null, caso contrario
-	 * @throws Exception se ocorrer erro ao ler ou escrever
-	 */
-	private String login() throws Exception {
-		File users = new File("userCreds.txt");
-		if (!users.exists())
-			users.createNewFile();
-		Scanner sc = new Scanner(users);
-
-		// le user e pass da socket
-		String user = (String) in.readObject();
-		String password = (String) in.readObject();
-
-		// verifica se user existe e pass esta correta
-		boolean newUser = true;
-		String line;
-		while (sc.hasNextLine()) {
-			if ((line = sc.nextLine()).startsWith(user) && line.endsWith(password)) { // se for a pass certa
-				newUser = false;
-				break;
-			} else if (line.startsWith(user)) { // se for a pass errada
-				sc.close();
-				return null;
-			}
-		}
-		sc.close();
-
-		// se o user nao existir faz o seu registo
-		if (newUser) {
-			FileWriter fw = new FileWriter("userCreds.txt");
-			fw.write(user + ":" + password);
-			fw.close();
-		}
-
-		return user;
-	}
-
 	private void interact(User user) throws Exception {
 		boolean exit = false;
 		boolean result = true;
@@ -127,7 +101,7 @@ class ServerThread extends Thread {
 			case "a":
 				String name = (String) in.readObject();
 				File image = (File) in.readObject();
-				result = user.addWine(name, image);
+				result = wineCatalog.addWine(name, image);
 
 				break;
 			case "s":
