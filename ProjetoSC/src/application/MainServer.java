@@ -9,12 +9,14 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import entities.User;
-import entities.Wine;
 
 public class MainServer {
 
+//	private static List<User> users; 
+
 	public static void main(String[] args) {
 
+//		users = new ArrayList<>();
 		ServerSocket serverSocket = null;
 
 		try { // criar socket
@@ -118,13 +120,15 @@ class ServerThread extends Thread {
 
 	private void interact(User user) throws Exception {
 		boolean exit = false;
+		boolean result = true;
 		while (!exit) {
 			String command = (String) in.readObject();
 			switch (command) {
 			case "a":
 				String name = (String) in.readObject();
 				File image = (File) in.readObject();
-				Wine w = new Wine(name, image);
+				result = user.addWine(name, image);
+
 				break;
 			case "s":
 				break;
@@ -140,11 +144,7 @@ class ServerThread extends Thread {
 			case "t":
 				String recipient = (String) in.readObject();
 				String message = (String) in.readObject();
-				boolean result = user.talk(recipient, message);
-				if (result)
-					out.writeObject("OK");
-				else
-					out.writeObject("Erro, destinatario nao existe");
+				result = user.talk(recipient, message);
 				break;
 			case "r":
 				break;
@@ -152,6 +152,10 @@ class ServerThread extends Thread {
 				exit = true;
 				break;
 			}
+			if (result)
+				out.writeObject("OK");
+			else
+				out.writeObject("Erro, destinatario nao existe");
 		}
 	}
 
