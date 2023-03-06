@@ -11,12 +11,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import application.WineAd;
+
 public class User {
 
 	private String name;
-	private int balance;
+	private double balance;
 	private HashMap<String, List<String>> inbox;
-	private List<Wine> wines;
+	private List<WineAd> wineAds;
 
 	public User(String name) throws IOException {
 		this.name = name;
@@ -29,7 +31,7 @@ public class User {
 			this.balance = 200;
 			bw.append(balance + "\r\n");
 			this.inbox = new HashMap<>();
-			this.wines = new ArrayList<>();
+			this.wineAds = new ArrayList<>();
 			bw.close();
 			fw.close();
 		} else { // se user ja existe
@@ -65,8 +67,12 @@ public class User {
 	/**
 	 * @return the balance
 	 */
-	public int getBalance() {
-		return balance;
+	public double getBalance() {
+		return this.balance;
+	}
+	
+	public void adjustBalance(double value) {
+		this.balance += value;
 	}
 
 	/**
@@ -79,36 +85,12 @@ public class User {
 	/**
 	 * @return the wines
 	 */
-	public List<Wine> getWines() {
-		return wines;
+	public List<WineAd> getWineAds() {
+		return this.wineAds;
 	}
-
-	public boolean addWine(String name, File image) {
-		for (Wine w : wines)
-			if (w.getName().equals(name))
-				return false;
-		wines.add(new Wine(name, image));
-		return true;
-	}
-
-	public boolean sell(String name, double value, int quantity) {
-		for (Wine w : wines) {
-			if (w.getName().equals(name)) {
-				w.setPrice(value);
-				w.setQuantityForSale(quantity);
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public boolean view(String name) {
-		for (Wine w : wines) {
-			if (w.getName().equals(name)) {
-
-			}
-		}
-		return false;
+	
+	public void createWineAd(Wine wine, int quantity, double price) {
+		this.wineAds.add(new WineAd(wine, quantity, price));
 	}
 
 	public boolean talk(String recipient, String message) throws IOException {
@@ -148,7 +130,7 @@ public class User {
 		BufferedWriter bw = new BufferedWriter(fw);
 		bw.flush(); // apagar conteudo do ficheiro
 
-		// apagar mensagens já lidas
+		// apagar mensagens jï¿½ lidas
 		bw.write(contents[0] + "\r\n" + new HashMap<>().toString() + "\r\n" + contents[2]);
 
 		fr.close();
