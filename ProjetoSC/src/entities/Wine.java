@@ -7,14 +7,14 @@ public class Wine {
 
 	private String name;
 	private File image;
-	private int quantity;
-	private int price;
+	private double price;
+	private int quantityForSale;
 	private HashMap<String, Byte> classifications;
 
 	public Wine(String name, File image) {
 		this.name = name;
 		this.image = image;
-		this.quantity = 0;
+		this.quantityForSale = 0;
 		this.classifications = new HashMap<>();
 	}
 
@@ -47,30 +47,16 @@ public class Wine {
 	}
 
 	/**
-	 * @return the quantity
-	 */
-	public int getQuantity() {
-		return quantity;
-	}
-
-	/**
-	 * @param quantity the quantity to set
-	 */
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	/**
 	 * @return the price
 	 */
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
 	/**
 	 * @param price the price to set
 	 */
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -89,6 +75,20 @@ public class Wine {
 	 */
 	public void addClassification(User user, Byte stars) {
 		classifications.put(user.getName(), stars);
+	}
+
+	/**
+	 * @return the quantityForSale
+	 */
+	public int getQuantityForSale() {
+		return quantityForSale;
+	}
+
+	/**
+	 * @param quantityForSale the quantityForSale to set
+	 */
+	public void setQuantityForSale(int quantityForSale) {
+		this.quantityForSale = quantityForSale;
 	}
 
 }
