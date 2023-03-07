@@ -32,7 +32,7 @@ public class UserCatalog {
     
     private static void getUsersByTextFile() {
 		try {
-			File myObj = new File("userCreds.txt");
+			File myObj = new File("storedFiles\\userCreds.txt");
 			if (!myObj.exists()) {
 				myObj.createNewFile();
 			} else {
@@ -60,7 +60,9 @@ public class UserCatalog {
 	 * @throws Exception se ocorrer erro ao ler ou escrever
 	 */
 	public String login(ObjectInputStream in, ObjectOutputStream out) throws Exception {
-		File users = new File("userCreds.txt");
+		
+		File users = new File("storedFiles\\userCreds.txt");
+		users.createNewFile();
 		Scanner sc = new Scanner(users);
 
 		// le user e pass da socket
@@ -83,7 +85,7 @@ public class UserCatalog {
 
 		// se o user nao existir faz o seu registo
 		if (newUser) {
-			FileWriter fw = new FileWriter("userCreds.txt");
+			FileWriter fw = new FileWriter("storedFiles\\userCreds.txt");
 			fw.write(user + ":" + password);
 			fw.close();
 		}

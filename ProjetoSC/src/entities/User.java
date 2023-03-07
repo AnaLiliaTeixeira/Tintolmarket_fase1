@@ -20,8 +20,9 @@ public class User {
 
 	public User(String name) throws IOException {
 		this.name = name;
-		File userInfo = new File(name + ".txt");
-
+		File userInfo = new File("storedFiles\\" + name + ".txt");
+		userInfo.createNewFile();
+		
 		if (!userInfo.exists()) { // se user nao existe
 			userInfo.createNewFile();
 			FileWriter fw = new FileWriter(userInfo);
