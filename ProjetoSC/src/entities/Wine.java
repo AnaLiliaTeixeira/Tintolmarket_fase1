@@ -77,6 +77,28 @@ public class Wine {
 		classifications.put(user.getName(), stars);
 	}
 
+	
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Nome do Vinho: " + name + " - " + image.getName() + "\n");
+		double avg = 0.0;
+		for (int i : classifications.values()) {
+			avg += i;
+		}
+		avg /= classifications.size();
+		
+		sb.append("Média das classificações: " + avg + "\n");
+		sb.append("Informações de venda do vinho: ");
+		
+		for (WineAd ad : currentAds) {
+			sb.append(ad + "\n");
+		}
+		
+		return sb.toString();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
