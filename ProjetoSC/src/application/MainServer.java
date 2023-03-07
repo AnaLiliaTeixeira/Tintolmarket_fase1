@@ -18,10 +18,10 @@ public class MainServer {
 	public static void main(String[] args) {
 
 		ServerSocket serverSocket = null;
-		
+
+		wineCatalog = WineCatalog.getInstance();
 		userCatalog = UserCatalog.getInstance();
-		wineCatalog = new WineCatalog();
-		
+
 		try { // criar socket
 			if (args.length != 0)
 				serverSocket = new ServerSocket(Integer.parseInt(args[0]));
@@ -67,8 +67,8 @@ class ServerThread extends Thread {
 	public void run() {
 		try {
 			// iniciar streams
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
 			// fazer login do user
 			String name = userCatalog.login(in, out);
