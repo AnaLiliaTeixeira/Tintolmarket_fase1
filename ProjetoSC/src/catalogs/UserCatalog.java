@@ -13,10 +13,21 @@ import entities.User;
 
 public class UserCatalog {
 
-	private List<User> users;
+	// Private static instance variable of the class
+    private static UserCatalog instance;
+	private static List<User> users;
 	
-	// Nome para excecao mais especifico
-	public UserCatalog() throws IOException {
+	private UserCatalog() {}
+	
+    public static UserCatalog getInstance() {
+        if (instance == null) {
+            instance = new UserCatalog();
+            getUsersByTextFile();
+        }
+        return instance;
+    }
+    
+    private static void getUsersByTextFile() {
 		try {
 			File myObj = new File("userCreds.txt");
 			Scanner myReader = new Scanner(myObj);
@@ -29,8 +40,11 @@ public class UserCatalog {
 		} catch (FileNotFoundException e) {
 			System.out.println("An error ocurred.");
 			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("An error ocurred.");
+			e.printStackTrace();
 		}
-	}
+    }
 	
 	/**
 	 * Faz login do utilizador ou cria um utilizador novo
