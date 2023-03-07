@@ -1,7 +1,6 @@
 package application;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -24,7 +23,7 @@ public class MainServer {
 		wineCatalog = new WineCatalog();
 		
 		try { // criar socket
-			if (args != null)
+			if (args.length != 0)
 				serverSocket = new ServerSocket(Integer.parseInt(args[0]));
 			else
 				serverSocket = new ServerSocket(12345);
@@ -55,8 +54,8 @@ public class MainServer {
 class ServerThread extends Thread {
 
 	private Socket socket;
-	private ObjectInputStream in;
-	private ObjectOutputStream out;
+//	private ObjectInputStream in;
+//	private ObjectOutputStream out;
 	private UserCatalog userCatalog;
 	private WineCatalog wineCatalog;
 
@@ -68,13 +67,13 @@ class ServerThread extends Thread {
 	public void run() {
 		try {
 			// iniciar streams
-			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
 			// fazer login do user
 			String name = userCatalog.login(in, out);
 			if (name != null)
-				interact(new User(name));
+				interact(new User(name), in, out);
 
 			// fechar ligacoes
 			in.close();
@@ -85,7 +84,7 @@ class ServerThread extends Thread {
 		}
 	}
 
-	private void interact(User user) throws Exception {
+	private void interact(User user, ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		boolean exit = false;
 		boolean result = true;
 		while (!exit) {
