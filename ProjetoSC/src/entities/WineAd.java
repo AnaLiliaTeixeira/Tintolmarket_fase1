@@ -1,6 +1,4 @@
-package application;
-
-import entities.Wine;
+package entities;
 
 public class WineAd {
 

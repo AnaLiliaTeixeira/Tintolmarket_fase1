@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import application.WineAd;
-
 public class User {
 
 	private String name;

@@ -1,10 +1,11 @@
-package application;
+package handlers;
 
 import java.util.List;
 
+import catalogs.WineCatalog;
 import entities.User;
 import entities.Wine;
-import entities.WineCatalog;
+import entities.WineAd;
 
 public class TransactionHandler {
 

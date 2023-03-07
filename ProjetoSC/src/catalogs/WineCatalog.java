@@ -1,7 +1,9 @@
-package entities;
+package catalogs;
 
 import java.io.File;
 import java.util.List;
+
+import entities.Wine;
 
 public class WineCatalog {
 

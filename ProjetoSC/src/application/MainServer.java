@@ -7,9 +7,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import catalogs.UserCatalog;
+import catalogs.WineCatalog;
 import entities.User;
-import entities.UserCatalog;
-import entities.WineCatalog;
 
 public class MainServer {
 
