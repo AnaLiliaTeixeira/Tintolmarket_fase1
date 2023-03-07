@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Wine {
 
@@ -74,5 +75,17 @@ public class Wine {
 	 */
 	public void addClassification(User user, Integer stars) {
 		classifications.put(user.getName(), stars);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Wine)) {
+			return false;
+		}
+		Wine other = (Wine) obj;
+		return Objects.equals(image, other.image) && Objects.equals(name, other.name);
 	}
 }
