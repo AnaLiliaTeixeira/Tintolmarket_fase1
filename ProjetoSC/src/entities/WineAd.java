@@ -38,9 +38,8 @@ public class WineAd {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("\tVendedor: " + user.getName() + "\n");
-		//sb.append("Nome do Vinho: " + wine.getName() + " - " + wine.getImage().getName() + "\n");
-		sb.append("\tPreço do Vinho: " + this.price + "\n");
-		sb.append("\tQuantidade disponível: " + this.quantity + "\n");
+		sb.append("\tPreco do Vinho: " + this.price + "\n");
+		sb.append("\tQuantidade disponivel: " + this.quantity + "\n");
 		return sb.toString();
 	}
 	

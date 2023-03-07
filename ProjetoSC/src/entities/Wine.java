@@ -89,8 +89,8 @@ public class Wine {
 		}
 		avg /= classifications.size();
 		
-		sb.append("Média das classificações: " + avg + "\n");
-		sb.append("Informações de venda do vinho: ");
+		sb.append("Media das classificacoes: " + avg + "\n");
+		sb.append("Informacoes de venda do vinho: ");
 		
 		for (WineAd ad : currentAds) {
 			sb.append(ad + "\n");
