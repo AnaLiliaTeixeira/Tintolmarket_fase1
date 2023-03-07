@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +18,9 @@ public class UserCatalog {
     private static UserCatalog instance;
 	private static List<User> users;
 	
-	private UserCatalog() {}
+	private UserCatalog() {
+		users = new ArrayList<>();
+	}
 	
     public static UserCatalog getInstance() {
         if (instance == null) {
@@ -30,13 +33,17 @@ public class UserCatalog {
     private static void getUsersByTextFile() {
 		try {
 			File myObj = new File("userCreds.txt");
-			Scanner myReader = new Scanner(myObj);
-			while(myReader.hasNextLine()) {
-				String data = myReader.nextLine();
-				users.add(new User(data.split(":")[0]));
-				System.out.println();
+			if (!myObj.exists()) {
+				myObj.createNewFile();
+			} else {
+				Scanner myReader = new Scanner(myObj);
+				while(myReader.hasNextLine()) {
+					String data = myReader.nextLine();
+					users.add(new User(data.split(":")[0]));
+					System.out.println();
+				}
+				myReader.close();
 			}
-			myReader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("An error ocurred.");
 			e.printStackTrace();
@@ -54,8 +61,6 @@ public class UserCatalog {
 	 */
 	public String login(ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		File users = new File("userCreds.txt");
-		if (!users.exists())
-			users.createNewFile();
 		Scanner sc = new Scanner(users);
 
 		// le user e pass da socket
