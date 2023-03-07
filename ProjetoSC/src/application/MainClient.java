@@ -76,34 +76,34 @@ public class MainClient {
 		while (true) {
 			String line = sc.nextLine();
 			String[] tokens = line.split(" ");
-			if (tokens[0] == "a" || tokens[0] == "add") {
+			if (tokens[0].equals("a") || tokens[0].equals("add")) {
 				out.writeObject("a");
 				out.writeObject(tokens[1]);
 				out.writeObject(new File(tokens[2]));
-			} else if (tokens[0] == "s" || tokens[0] == "sell") {
+			} else if (tokens[0].equals("s") || tokens[0].equals("sell")) {
 				out.writeObject("s");
 				out.writeObject(tokens[1]);
 				out.writeObject(tokens[2]);
 				out.writeObject(tokens[3]);
-			} else if (tokens[0] == "v" || tokens[0] == "view") {
+			} else if (tokens[0].equals("v") || tokens[0].equals("view")) {
 				out.writeObject("v");
 				out.writeObject(tokens[1]);
-			} else if (tokens[0] == "b" || tokens[0] == "buy") {
+			} else if (tokens[0].equals("b") || tokens[0].equals("buy")) {
 				out.writeObject("b");
 				out.writeObject(tokens[1]);
 				out.writeObject(tokens[2]);
 				out.writeObject(tokens[3]);
-			} else if (tokens[0] == "w" || tokens[0] == "wallet") {
+			} else if (tokens[0].equals("w") || tokens[0].equals("wallet")) {
 				out.writeObject("w");
-			} else if (tokens[0] == "c" || tokens[0] == "classify") {
+			} else if (tokens[0].equals("c") || tokens[0].equals("classify")) {
 				out.writeObject("c");
 				out.writeObject(tokens[1]);
 				out.writeObject(tokens[2]);
-			} else if (tokens[0] == "t" || tokens[0] == "talk") {
+			} else if (tokens[0].equals("t") || tokens[0].equals("talk")) {
 				out.writeObject("t");
 				out.writeObject(tokens[1]);
 				out.writeObject(tokens[2]);
-			} else if (tokens[0] == "r" || tokens[0] == "read") {
+			} else if (tokens[0].equals("r") || tokens[0].equals("read")) {
 				out.writeObject("r");
 			} else {
 				out.writeObject("exit");
