@@ -1,18 +1,22 @@
 package entities;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Wine {
 
 	private String name;
 	private File image;
 	private HashMap<String, Integer> classifications;
+	private List<WineAd> currentAds;
 
 	public Wine(String name, File image) {
 		this.name = name;
 		this.image = image;
 		this.classifications = new HashMap<>();
+		this.currentAds = new ArrayList<>();
 	}
 
 	/**
@@ -41,6 +45,18 @@ public class Wine {
 	 */
 	public void setImage(File image) {
 		this.image = image;
+	}
+	
+	public List<WineAd> getCurrentAds() {
+		return this.currentAds;
+	}
+	
+	public void addNewAd(WineAd wa) {
+		this.currentAds.add(wa);
+	}
+	
+	public void removeNewAd(WineAd wa) {
+		this.currentAds.remove(wa);
 	}
 
 	/**
