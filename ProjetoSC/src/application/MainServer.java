@@ -21,14 +21,8 @@ public class MainServer {
 //		users = new ArrayList<>();
 		ServerSocket serverSocket = null;
 		
-		// Create Users and Wines Catalog
-		try {
-			userCatalog = new UserCatalog();
-			wineCatalog = new WineCatalog();
-		} catch (IOException e1) {
-			System.out.println("Error creating a Catalog.");
-			e1.printStackTrace();
-		}
+		userCatalog = UserCatalog.getInstance();
+		wineCatalog = new WineCatalog();
 		
 		try { // criar socket
 			if (args != null)
