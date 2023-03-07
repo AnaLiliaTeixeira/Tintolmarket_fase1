@@ -35,9 +35,13 @@ public class User {
 		} else { // se user ja existe
 			FileReader fr = new FileReader(userInfo);
 			BufferedReader br = new BufferedReader(fr);
-			this.balance = Integer.parseInt(br.readLine()); // obter saldo a partir do ficheiro
+			this.balance = Double.parseDouble(br.readLine()); // obter saldo a partir do ficheiro
 
-			this.inbox = stringToHashMap(br.readLine()); // obter inbox a partir do ficheiro
+			String inboxString = br.readLine();
+			if (inboxString != null)
+				this.inbox = stringToHashMap(inboxString); // obter inbox a partir do ficheiro
+			else
+				this.inbox = new HashMap<>();
 
 			// TODO
 			// falta lista de vinhos
@@ -68,7 +72,7 @@ public class User {
 	public double getBalance() {
 		return this.balance;
 	}
-	
+
 	public void adjustBalance(double value) {
 		this.balance += value;
 	}
@@ -86,7 +90,7 @@ public class User {
 	public List<WineAd> getWineAds() {
 		return this.wineAds;
 	}
-	
+
 	public void createWineAd(Wine wine, int quantity, double price) {
 		this.wineAds.add(new WineAd(this, wine, quantity, price));
 	}
