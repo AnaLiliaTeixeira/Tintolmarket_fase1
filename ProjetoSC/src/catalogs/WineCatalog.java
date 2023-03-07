@@ -33,16 +33,14 @@ public class WineCatalog {
 		return true;
 	}
 	
-	//TODO
 	public boolean view(String wineName) {
-		StringBuilder sb = new StringBuilder();
 		Wine wine = this.getWine(wineName);
-		
-		sb.append("\t Informacoes sobre o vinho: \n");
-		sb.append("Imagem: " + wine.getImage());
-		//sb.append("Classificacao Media: " + wine);
-		// available wines to sell (neste caso é quando tem >0 vinhos na lista)sb.append(null)
-		// ter duas listas pode ser melhor
-		return false;
+		if (wine == null) {
+			return false;
+		}
+		System.out.println("Informações sobre o vinho: \n");
+		System.out.println(wine);
+
+		return true;
 	}
 }
