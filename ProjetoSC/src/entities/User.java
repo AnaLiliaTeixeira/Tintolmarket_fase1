@@ -88,7 +88,7 @@ public class User {
 	}
 	
 	public void createWineAd(Wine wine, int quantity, double price) {
-		this.wineAds.add(new WineAd(wine, quantity, price));
+		this.wineAds.add(new WineAd(this, wine, quantity, price));
 	}
 
 	public boolean talk(String recipient, String message) throws IOException {
