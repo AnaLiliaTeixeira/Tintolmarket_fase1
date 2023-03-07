@@ -18,7 +18,6 @@ public class MainServer {
 
 	public static void main(String[] args) {
 
-//		users = new ArrayList<>();
 		ServerSocket serverSocket = null;
 		
 		userCatalog = UserCatalog.getInstance();
