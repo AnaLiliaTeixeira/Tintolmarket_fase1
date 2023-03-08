@@ -2,6 +2,7 @@ package handlers;
 
 import java.util.List;
 
+import catalogs.WineAdCatalog;
 import catalogs.WineCatalog;
 import entities.User;
 import entities.Wine;
@@ -33,9 +34,9 @@ public class TransactionHandler {
 		WineAd wad=null;
 		int availableQuantity=0;
 		double priceToPay=0;
-		List<WineAd> wineAds = seller.getWineAds();
+		List<WineAd> wineAds = wine.getCurrentAds();
 		for(WineAd wa : wineAds) {
-			if(wa.getWine().equals(wine)) {
+			if(wa.getUser().equals(seller)) {
 				wad = wa;
 				availableQuantity = wa.getQuantity();
 				priceToPay = wa.getPrice()*quantity;
@@ -48,9 +49,11 @@ public class TransactionHandler {
 		
 		buyer.adjustBalance(-priceToPay);
 		seller.adjustBalance(priceToPay);
-		
-		// add a lista do comprador (buyer) c/ a qnt que comprou do seller?? 
 		wad.adjustQuantity(-quantity);
+		if (wad.getQuantity() == 0) {
+			WineAdCatalog wineAdCatalog = WineAdCatalog.getInstance();
+			wineAdCatalog.remove(wad);
+		}
 
 		return true;		
 	}
