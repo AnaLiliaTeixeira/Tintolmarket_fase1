@@ -43,7 +43,7 @@ public class User {
 			this.inbox = new HashMap<>();
 			FileWriter fw = new FileWriter(userInfo);
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.append(this.name + " " + this.balance + " " + this.inbox);
+			bw.append(this.toString());
 			fw.close();
 			bw.close();
 		}
@@ -156,6 +156,11 @@ public class User {
 		}
 		User other = (User) obj;
 		return Objects.equals(name, other.name);
+	}
+	
+	@Override
+	public String toString() {
+		return this.name + " " + this.balance + " " + this.inbox;
 	}
 
 }
