@@ -1,38 +1,53 @@
 package catalogs;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import entities.Wine;
 
 public class WineCatalog {
-	
-	/*
-	 * um ficheiro com user:password de todos os users
-	 * um ficheiro por user com saldo, anuncios etc.
-	 * um ficheiro com todos os vinhos
-	 * 
-	 */
 
 	private List<Wine> wines;
 	private static WineCatalog instance;
 
 	private WineCatalog() {
 		this.wines = new ArrayList<>();
-		// chamar metodos
+		File wineInfo = new File("storedFiles\\wineCatalog.txt");
+		try {
+			if(!wineInfo.exists())
+				wineInfo.createNewFile();
+			else
+				getWinesByTextFile(wineInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static WineCatalog getInstance() {
 		if (instance == null) {
 			instance = new WineCatalog();
-			// inicializar
 		}
 		return instance;
 	}
 
-	// Construtor WineCatalog (tirar duvidas com o stor primeiro)
-
+	
+    private void getWinesByTextFile(File wineInfo) {
+		try {
+			Scanner myReader = new Scanner(wineInfo);
+			while(myReader.hasNextLine()) {
+				String line[] = myReader.nextLine().split(" ");
+				wines.add(new Wine(line[0]));
+			}
+			myReader.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("An error ocurred.");
+			e.printStackTrace();
+		} 
+    }
 	/**
 	 * @return the wines
 	 */
@@ -61,7 +76,7 @@ public class WineCatalog {
 			return false;
 		}
 		System.out.println("Informações sobre o vinho: \n");
-		System.out.println(wine);
+		System.out.println(wine.printWine());
 
 		return true;
 	}

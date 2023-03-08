@@ -1,9 +1,14 @@
 package entities;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 import catalogs.WineAdCatalog;
 
@@ -17,6 +22,38 @@ public class Wine {
 		this.name = name;
 		this.image = image;
 		this.classifications = new HashMap<>();
+		
+		try {
+			File wineInfo = new File("storedFiles\\wineCatalog.txt");	
+			FileWriter fw = new FileWriter(wineInfo);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.append(this.toString());
+			fw.close();
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	public Wine(String name) {
+		this.name = name;
+		
+		File wineInfo = new File("storedFiles\\wineCatalog.txt");
+		Scanner sc = null;
+		try {
+			sc = new Scanner(wineInfo);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		while(sc.hasNextLine()) {
+			String[] line = sc.nextLine().split(" ");
+			if(line[0].equals(name)) {
+				this.image = new File(line[1]);
+				this.classifications = stringToHashMap(line[2]);
+			}
+		}
+		sc.close();
 	}
 
 	/**
@@ -69,10 +106,7 @@ public class Wine {
 		classifications.put(user.getName(), stars);
 	}
 
-	
-	
-	@Override
-	public String toString() {
+	public String printWine() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Nome do Vinho: " + name + " - " + image.getName() + "\n");
 		double avg = 0.0;
@@ -89,6 +123,22 @@ public class Wine {
 		}
 		
 		return sb.toString();
+	}
+	
+	private HashMap<String, Integer> stringToHashMap(String line) {
+		HashMap<String, Integer> result = new HashMap<>();
+		line = line.substring(1, line.length() - 1);
+		String[] hashContents = line.split(", ");
+		for (String s : hashContents) {
+			String[] item = s.split("=");
+			result.put(item[0], Integer.parseInt(item[1]));
+		}
+		return result;
+	}	
+	
+	@Override
+	public String toString() {
+		return this.name + " " + this.image.getName() + " " + this.classifications;
 	}
 
 	@Override
