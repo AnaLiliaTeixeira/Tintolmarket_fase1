@@ -34,7 +34,7 @@ public class MainServer {
 		try { // handler de cada cliente
 			while (true) {
 				Socket socket = serverSocket.accept();
-				ServerThread st = new ServerThread(socket, userCatalog);
+				ServerThread st = new ServerThread(socket, userCatalog, wineCatalog);
 				st.start();
 			}
 		} catch (Exception e) {
@@ -59,9 +59,10 @@ class ServerThread extends Thread {
 	private UserCatalog userCatalog;
 	private WineCatalog wineCatalog;
 
-	public ServerThread(Socket inSoc, UserCatalog userCatalog) {
+	public ServerThread(Socket inSoc, UserCatalog userCatalog, WineCatalog wineCatalog) {
 		this.socket = inSoc;
 		this.userCatalog = userCatalog;
+		this.wineCatalog = wineCatalog;
 	}
 
 	public void run() {
@@ -94,7 +95,6 @@ class ServerThread extends Thread {
 				String name = (String) in.readObject();
 				File image = (File) in.readObject();
 				result = wineCatalog.addWine(name, image);
-
 				break;
 			case "s":
 				break;
@@ -103,7 +103,7 @@ class ServerThread extends Thread {
 			case "b":
 				break;
 			case "w":
-				out.writeObject(user.getBalance());
+				out.writeObject(String.valueOf(user.getBalance()));
 				break;
 			case "c":
 				break;
