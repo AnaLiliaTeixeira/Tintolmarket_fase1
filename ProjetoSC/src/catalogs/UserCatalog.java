@@ -20,6 +20,13 @@ public class UserCatalog {
 	
 	private UserCatalog() {
 		users = new ArrayList<>();
+		File userInfo = new File("storedFiles\\userCatalog.txt");
+		try {
+			if(!userInfo.exists())
+				userInfo.createNewFile();			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
     public static UserCatalog getInstance() {

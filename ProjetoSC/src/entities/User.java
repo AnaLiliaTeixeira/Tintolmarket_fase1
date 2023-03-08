@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 import catalogs.WineAdCatalog;
 
@@ -22,36 +23,30 @@ public class User {
 
 	public User(String name) throws IOException {
 		this.name = name;
-		File userInfo = new File("storedFiles\\" + name + ".txt");
-		userInfo.createNewFile();
 		
-		if (!userInfo.exists()) { // se user nao existe
-			userInfo.createNewFile();
+		File userInfo = new File("storedFiles\\userCatalog.txt");
+		Scanner sc = new Scanner(userInfo);
+		
+		boolean found = false;
+		while(sc.hasNextLine()) {
+			String[] line = sc.nextLine().split(" ");
+			if(line[0].equals(name)) {
+				found = true;
+				this.balance = Double.parseDouble(line[1]);
+				this.inbox = stringToHashMap(line[2]);
+			}
+		}
+		sc.close();
+		
+		if(!found) {
+			this.balance = 200;
+			this.inbox = new HashMap<>();
 			FileWriter fw = new FileWriter(userInfo);
 			BufferedWriter bw = new BufferedWriter(fw);
-			this.balance = 200;
-			bw.append(balance + "\r\n");
-			this.inbox = new HashMap<>();
-			bw.close();
+			bw.append(this.name + " " + this.balance + " " + this.inbox);
 			fw.close();
-		} else { // se user ja existe
-			FileReader fr = new FileReader(userInfo);
-			BufferedReader br = new BufferedReader(fr);
-			this.balance = Double.parseDouble(br.readLine()); // obter saldo a partir do ficheiro
-
-			String inboxString = br.readLine();
-			if (inboxString != null)
-				this.inbox = stringToHashMap(inboxString); // obter inbox a partir do ficheiro
-			else
-				this.inbox = new HashMap<>();
-
-			// TODO
-			// falta lista de vinhos
-
-			fr.close();
-			br.close();
+			bw.close();
 		}
-
 	}
 
 	/**
