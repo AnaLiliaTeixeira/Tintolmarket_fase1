@@ -1,6 +1,5 @@
 package entities;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -26,10 +25,8 @@ public class Wine {
 		try {
 			File wineInfo = new File("storedFiles\\wineCatalog.txt");	
 			FileWriter fw = new FileWriter(wineInfo);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.append(this.toString());
+			fw.write(this.toString());
 			fw.close();
-			bw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
@@ -129,9 +126,11 @@ public class Wine {
 		HashMap<String, Integer> result = new HashMap<>();
 		line = line.substring(1, line.length() - 1);
 		String[] hashContents = line.split(", ");
-		for (String s : hashContents) {
-			String[] item = s.split("=");
-			result.put(item[0], Integer.parseInt(item[1]));
+		if(hashContents[0].contains("=")) {
+			for (String s : hashContents) {
+				String[] item = s.split("=");
+				result.put(item[0], Integer.parseInt(item[1]));
+			}
 		}
 		return result;
 	}	

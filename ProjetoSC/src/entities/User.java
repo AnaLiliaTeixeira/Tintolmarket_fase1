@@ -42,10 +42,8 @@ public class User {
 			this.balance = 200;
 			this.inbox = new HashMap<>();
 			FileWriter fw = new FileWriter(userInfo);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.append(this.toString());
+			fw.write(this.toString());
 			fw.close();
-			bw.close();
 		}
 	}
 
@@ -137,11 +135,13 @@ public class User {
 		HashMap<String, List<String>> result = new HashMap<>();
 		line = line.substring(1, line.length() - 1);
 		String[] hashContents = line.split(", ");
-		for (String s : hashContents) {
-			String[] item = s.split("=");
-			item[1] = item[1].substring(1, item[1].length() - 1);
-			List<String> value = Arrays.asList(item[1].split("\"|, \""));
-			result.put(item[0], value);
+		if(hashContents[0].contains("=")) {
+			for (String s : hashContents) {
+				String[] item = s.split("=");
+				item[1] = item[1].substring(1, item[1].length() - 1);
+				List<String> value = Arrays.asList(item[1].split("\"|, \""));
+				result.put(item[0], value);
+			}
 		}
 		return result;
 	}	

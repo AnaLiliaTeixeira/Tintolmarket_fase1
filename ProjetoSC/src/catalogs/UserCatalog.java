@@ -43,7 +43,7 @@ public class UserCatalog {
 			Scanner myReader = new Scanner(userInfo);
 			while(myReader.hasNextLine()) {
 				String data = myReader.nextLine();
-				users.add(new User(data.split(":")[0]));
+				users.add(new User(data.split(" ")[0]));
 			}
 			myReader.close();
 			
