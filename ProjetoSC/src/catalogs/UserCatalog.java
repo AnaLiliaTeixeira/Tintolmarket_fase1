@@ -16,14 +16,16 @@ public class UserCatalog {
 
 	// Private static instance variable of the class
     private static UserCatalog instance;
-	private static List<User> users;
+	private List<User> users;
 	
 	private UserCatalog() {
 		users = new ArrayList<>();
 		File userInfo = new File("storedFiles\\userCatalog.txt");
 		try {
 			if(!userInfo.exists())
-				userInfo.createNewFile();			
+				userInfo.createNewFile();
+			else
+				getUsersByTextFile(userInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -32,25 +34,19 @@ public class UserCatalog {
     public static UserCatalog getInstance() {
         if (instance == null) {
             instance = new UserCatalog();
-            getUsersByTextFile();
         }
         return instance;
     }
     
-    private static void getUsersByTextFile() {
+    private void getUsersByTextFile(File userInfo) {
 		try {
-			File myObj = new File("storedFiles\\userCreds.txt");
-			if (!myObj.exists()) {
-				myObj.createNewFile();
-			} else {
-				Scanner myReader = new Scanner(myObj);
-				while(myReader.hasNextLine()) {
-					String data = myReader.nextLine();
-					users.add(new User(data.split(":")[0]));
-					System.out.println();
-				}
-				myReader.close();
+			Scanner myReader = new Scanner(userInfo);
+			while(myReader.hasNextLine()) {
+				String data = myReader.nextLine();
+				users.add(new User(data.split(":")[0]));
 			}
+			myReader.close();
+			
 		} catch (FileNotFoundException e) {
 			System.out.println("An error ocurred.");
 			e.printStackTrace();
