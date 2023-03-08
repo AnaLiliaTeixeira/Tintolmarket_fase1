@@ -29,7 +29,7 @@ public class User {
 		
 		boolean found = false;
 		while(sc.hasNextLine()) {
-			String[] line = sc.nextLine().split(" ");
+			String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
 			if(line[0].equals(name)) {
 				found = true;
 				this.balance = Double.parseDouble(line[1]);
@@ -134,12 +134,13 @@ public class User {
 	private HashMap<String, List<String>> stringToHashMap(String line) {
 		HashMap<String, List<String>> result = new HashMap<>();
 		line = line.substring(1, line.length() - 1);
-		String[] hashContents = line.split(", ");
+		String[] hashContents = line.split("(?!\\[.*), (?![^\\[]*?\\])");
 		if(hashContents[0].contains("=")) {
 			for (String s : hashContents) {
+				s = s.replace("\"", "");
 				String[] item = s.split("=");
 				item[1] = item[1].substring(1, item[1].length() - 1);
-				List<String> value = Arrays.asList(item[1].split("\"|, \""));
+				List<String> value = Arrays.asList(item[1].split(", "));
 				result.put(item[0], value);
 			}
 		}
