@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+
+import catalogs.WineAdCatalog;
 
 public class User {
 
 	private String name;
 	private double balance;
 	private HashMap<String, List<String>> inbox;
-	private List<WineAd> wineAds;
 
 	public User(String name) throws IOException {
 		this.name = name;
@@ -30,7 +32,6 @@ public class User {
 			this.balance = 200;
 			bw.append(balance + "\r\n");
 			this.inbox = new HashMap<>();
-			this.wineAds = new ArrayList<>();
 			bw.close();
 			fw.close();
 		} else { // se user ja existe
@@ -85,15 +86,9 @@ public class User {
 		return inbox;
 	}
 
-	/**
-	 * @return the wines
-	 */
-	public List<WineAd> getWineAds() {
-		return this.wineAds;
-	}
-
 	public void createWineAd(Wine wine, int quantity, double price) {
-		this.wineAds.add(new WineAd(this, wine, quantity, price));
+		WineAdCatalog wineAds = WineAdCatalog.getInstance();
+		wineAds.add(new WineAd(this, wine, quantity, price));
 	}
 
 	public boolean talk(String recipient, String message) throws IOException {
@@ -154,6 +149,18 @@ public class User {
 			result.put(item[0], value);
 		}
 		return result;
+	}	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof User)) {
+			return false;
+		}
+		User other = (User) obj;
+		return Objects.equals(name, other.name);
 	}
 
 }
