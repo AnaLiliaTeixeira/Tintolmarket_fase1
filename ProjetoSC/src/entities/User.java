@@ -41,8 +41,8 @@ public class User {
 		if(!found) {
 			this.balance = 200;
 			this.inbox = new HashMap<>();
-			FileWriter fw = new FileWriter(userInfo);
-			fw.write(this.toString());
+			FileWriter fw = new FileWriter(userInfo, true);
+			fw.write(this.toString() + "\r\n");
 			fw.close();
 		}
 	}
@@ -137,7 +137,6 @@ public class User {
 		String[] hashContents = line.split("(?!\\[.*), (?![^\\[]*?\\])");
 		if(hashContents[0].contains("=")) {
 			for (String s : hashContents) {
-				s = s.replace("\"", "");
 				String[] item = s.split("=");
 				item[1] = item[1].substring(1, item[1].length() - 1);
 				List<String> value = Arrays.asList(item[1].split(", "));

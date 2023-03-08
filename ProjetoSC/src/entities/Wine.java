@@ -24,8 +24,8 @@ public class Wine {
 		
 		try {
 			File wineInfo = new File("storedFiles\\wineCatalog.txt");	
-			FileWriter fw = new FileWriter(wineInfo);
-			fw.write(this.toString());
+			FileWriter fw = new FileWriter(wineInfo, true);
+			fw.write(this.toString() + "\r\n");
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -44,10 +44,11 @@ public class Wine {
 		}
 		
 		while(sc.hasNextLine()) {
-			String[] line = sc.nextLine().split(" ");
+			String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
 			if(line[0].equals(name)) {
 				this.image = new File(line[1]);
 				this.classifications = stringToHashMap(line[2]);
+				break;
 			}
 		}
 		sc.close();
