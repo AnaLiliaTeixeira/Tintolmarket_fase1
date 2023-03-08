@@ -1,23 +1,22 @@
 package entities;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import catalogs.WineAdCatalog;
 
 public class Wine {
 
 	private String name;
 	private File image;
 	private HashMap<String, Integer> classifications;
-	private List<WineAd> currentAds;
 
 	public Wine(String name, File image) {
 		this.name = name;
 		this.image = image;
 		this.classifications = new HashMap<>();
-		this.currentAds = new ArrayList<>();
 	}
 
 	/**
@@ -49,15 +48,8 @@ public class Wine {
 	}
 	
 	public List<WineAd> getCurrentAds() {
-		return this.currentAds;
-	}
-	
-	public void addNewAd(WineAd wa) {
-		this.currentAds.add(wa);
-	}
-	
-	public void removeNewAd(WineAd wa) {
-		this.currentAds.remove(wa);
+		WineAdCatalog wineAds = WineAdCatalog.getInstance();
+		return wineAds.getWineAdsByWine(this);
 	}
 
 	/**
@@ -92,7 +84,7 @@ public class Wine {
 		sb.append("Media das classificacoes: " + avg + "\n");
 		sb.append("Informacoes de venda do vinho: ");
 		
-		for (WineAd ad : currentAds) {
+		for (WineAd ad : getCurrentAds()) {
 			sb.append(ad + "\n");
 		}
 		
