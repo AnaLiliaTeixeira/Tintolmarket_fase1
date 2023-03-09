@@ -81,21 +81,30 @@ class ServerThread extends Thread {
 		boolean result = true;
 		while (!exit) {
 			String command = (String) in.readObject();
+			String arg1 = null;
+			String arg2 = null;
+			int quantity;
 			switch (command) {
 			case "a":
-				String name = (String) in.readObject();
+				arg1 = (String) in.readObject();
 				File image = (File) in.readObject();
-				result = AddInfoHandler.add(name, image);
+				result = AddInfoHandler.add(arg1, image);
 				break;
 			case "s":
-				String wine = (String) in.readObject();
+				arg1 = (String) in.readObject();
 				double price = Double.parseDouble((String) in.readObject());
-				int quantity = Integer.parseInt((String) in.readObject());
-				TransactionHandler.sell(user, wine, price, quantity);
+				quantity = Integer.parseInt((String) in.readObject());
+				TransactionHandler.sell(user, arg1, price, quantity);
 				break;
 			case "v":
+				arg1 = (String) in.readObject();
+				out.writeObject(ShowInfoHandler.view(arg2));
 				break;
 			case "b":
+				arg1 = (String) in.readObject();
+				arg2 = (String) in.readObject();
+				quantity = Integer.parseInt((String) in.readObject());
+				TransactionHandler.buy(user, arg1, arg2, quantity);
 				break;
 			case "w":
 				out.writeObject(ShowInfoHandler.wallet(user));
@@ -108,6 +117,7 @@ class ServerThread extends Thread {
 				result = AddInfoHandler.talk(user, recipient, message);
 				break;
 			case "r":
+				out.writeObject(ShowInfoHandler.read(user));
 				break;
 			default:
 				exit = true;
