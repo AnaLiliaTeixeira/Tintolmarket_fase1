@@ -1,16 +1,13 @@
 package entities;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import catalogs.WineAdCatalog;
+import utils.Utils;
 
 public class User {
 
@@ -61,24 +58,20 @@ public class User {
 		wineAds.add(new WineAd(this, wine, price, quantity));
 	}
 
-	public String read() throws Exception {
-		File userInfo = new File(name + ".txt");
-		FileReader fr = new FileReader(userInfo);
-		BufferedReader br = new BufferedReader(fr);
-		String[] contents = { br.readLine(), br.readLine(), br.readLine() };
+	public String inboxToString() {
+		StringBuilder sb = new StringBuilder();
+		for (String key : inbox.keySet()) {
+			sb.append(key + ": " + inbox.get(key) + "\r\n");
+		}
+		return sb.toString();
+	}
 
-		FileWriter fw = new FileWriter(userInfo);
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.flush(); // apagar conteudo do ficheiro
-
-		// apagar mensagens j� lidas
-		bw.write(contents[0] + "\r\n" + new HashMap<>().toString() + "\r\n" + contents[2]);
-
-		fr.close();
-		br.close();
-		fw.close();
-		bw.close();
-		return contents[1]; // retornar hashmap em string
+	public void deleteMessages() {
+		File userInfo = new File("storedFiles\\userCatalog.txt");
+		String oldLine = this.toString();
+		this.inbox.clear();
+		String newLine = this.toString();
+		Utils.replaceLine(userInfo, oldLine, newLine);
 	}
 
 	@Override
