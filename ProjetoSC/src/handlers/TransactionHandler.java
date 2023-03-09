@@ -10,14 +10,8 @@ import entities.WineAd;
 
 public class TransactionHandler {
 
-	private WineCatalog wineCatalog;
-
-	public TransactionHandler(WineCatalog wineCatalog) {
-		this.wineCatalog = wineCatalog;
-	}
-
-	public boolean sell(User user, String name, double price, int quantity) {
-		Wine w = wineCatalog.getWineByName(name);
+	public static boolean sell(User user, String name, double price, int quantity) {
+		Wine w = WineCatalog.getInstance().getWineByName(name);
 		if (w != null) {
 			user.createWineAd(w, price, quantity);
 			return true;
@@ -25,9 +19,9 @@ public class TransactionHandler {
 		return false;
 	}
 
-	public boolean buy(User buyer, String wineName, User seller, int quantity) {
+	public static boolean buy(User buyer, String wineName, User seller, int quantity) {
 		double balance = buyer.getBalance();
-		Wine wine = wineCatalog.getWineByName(wineName);
+		Wine wine = WineCatalog.getInstance().getWineByName(wineName);
 		if (wine == null)
 			return false;
 
@@ -59,4 +53,5 @@ public class TransactionHandler {
 
 		return true;
 	}
+
 }
