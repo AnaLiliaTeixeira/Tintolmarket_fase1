@@ -89,7 +89,7 @@ public class WineCatalog {
 		if (wine == null) {
 			return false;
 		}
-		System.out.println("Informações sobre o vinho: \n");
+		System.out.println("Informacoes sobre o vinho: \n");
 		System.out.println(wine.printWine());
 
 		return true;
