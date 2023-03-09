@@ -7,24 +7,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import catalogs.UserCatalog;
-import catalogs.WineAdCatalog;
-import catalogs.WineCatalog;
 import entities.User;
+import handlers.AddInfoHandler;
+import handlers.ShowInfoHandler;
 import handlers.TransactionHandler;
 
 public class MainServer {
 
-	private static UserCatalog userCatalog;
-	private static WineCatalog wineCatalog;
-	private static WineAdCatalog wineAdCatalog;
-
 	public static void main(String[] args) {
 
 		ServerSocket serverSocket = null;
-
-		wineCatalog = WineCatalog.getInstance();
-		userCatalog = UserCatalog.getInstance();
-		wineAdCatalog = WineAdCatalog.getInstance();
 
 		try { // criar socket
 			if (args.length != 0)
@@ -38,7 +30,7 @@ public class MainServer {
 		try { // handler de cada cliente
 			while (true) {
 				Socket socket = serverSocket.accept();
-				ServerThread st = new ServerThread(socket, userCatalog, wineCatalog, wineAdCatalog);
+				ServerThread st = new ServerThread(socket);
 				st.start();
 			}
 		} catch (Exception e) {
@@ -58,17 +50,9 @@ public class MainServer {
 class ServerThread extends Thread {
 
 	private Socket socket;
-	private UserCatalog userCatalog;
-	private WineCatalog wineCatalog;
-	private WineAdCatalog wineAdCatalog;
-	private TransactionHandler th;
 
-	public ServerThread(Socket inSoc, UserCatalog userCatalog, WineCatalog wineCatalog, WineAdCatalog wineAdCatalog) {
+	public ServerThread(Socket inSoc) {
 		this.socket = inSoc;
-		this.userCatalog = userCatalog;
-		this.wineCatalog = wineCatalog;
-		this.wineAdCatalog = wineAdCatalog;
-		this.th = new TransactionHandler(wineCatalog);
 	}
 
 	public void run() {
@@ -78,6 +62,7 @@ class ServerThread extends Thread {
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
 			// fazer login do user
+			UserCatalog userCatalog = UserCatalog.getInstance();
 			String name = userCatalog.login(in, out);
 			if (name != null)
 				interact(userCatalog.getUserByName(name), in, out);
@@ -100,27 +85,27 @@ class ServerThread extends Thread {
 			case "a":
 				String name = (String) in.readObject();
 				File image = (File) in.readObject();
-				result = wineCatalog.addWine(name, image);
+				result = AddInfoHandler.add(name, image);
 				break;
 			case "s":
 				String wine = (String) in.readObject();
 				double price = Double.parseDouble((String) in.readObject());
 				int quantity = Integer.parseInt((String) in.readObject());
-				th.sell(user, wine, price, quantity);
+				TransactionHandler.sell(user, wine, price, quantity);
 				break;
 			case "v":
 				break;
 			case "b":
 				break;
 			case "w":
-				out.writeObject(String.valueOf(user.getBalance()));
+				out.writeObject(ShowInfoHandler.wallet(user));
 				break;
 			case "c":
 				break;
 			case "t":
 				String recipient = (String) in.readObject();
 				String message = (String) in.readObject();
-				result = userCatalog.talk(user, recipient, message);
+				result = AddInfoHandler.talk(user, recipient, message);
 				break;
 			case "r":
 				break;
