@@ -6,16 +6,16 @@ public class WineAd {
 
 	private User user;
 	private Wine wine;
-	private int quantity;
 	private double price;
-	
-	public WineAd(User user, Wine wine, int quantity, double price) {
+	private int quantity;
+
+	public WineAd(User user, Wine wine, double price, int quantity) {
 		this.user = user;
 		this.wine = wine;
-		this.quantity = quantity;
 		this.price = price;
-	}	
-	
+		this.quantity = quantity;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -29,16 +29,16 @@ public class WineAd {
 	}
 
 	public void adjustQuantity(int quantity) {
-		this.quantity+=quantity;
+		this.quantity += quantity;
 	}
-	
+
 	public double getPrice() {
 		return price;
 	}
-	
+
 	@Override
 	public String toString() {
-		return  user.getName() + " " + this.wine.getName() + " " + this.quantity + " " + this.price;
+		return user.getName() + " " + this.wine.getName() + " " + this.price + " " + this.quantity;
 	}
 
 	@Override
@@ -52,7 +52,5 @@ public class WineAd {
 		WineAd other = (WineAd) obj;
 		return Objects.equals(user, other.user) && Objects.equals(wine, other.wine);
 	}
-	
 
-	
 }

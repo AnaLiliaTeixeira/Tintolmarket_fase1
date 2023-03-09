@@ -50,8 +50,8 @@ public class WineAdCatalog {
 			String[] line = sc.nextLine().split(" ");
 			UserCatalog uc = UserCatalog.getInstance();
 			WineCatalog wc = WineCatalog.getInstance();
-			wineAds.add(new WineAd(uc.getUserByName(line[0]), wc.getWineByName(line[1]), Integer.parseInt(line[2]),
-					Double.parseDouble(line[3])));
+			wineAds.add(new WineAd(uc.getUserByName(line[0]), wc.getWineByName(line[1]), Double.parseDouble(line[3]),
+					Integer.parseInt(line[2])));
 			break;
 		}
 		sc.close();
@@ -81,7 +81,7 @@ public class WineAdCatalog {
 		try {
 			File wineAdInfo = new File("storedFiles\\wineAdsCatalog.txt");
 			FileWriter fw = new FileWriter(wineAdInfo, true);
-			fw.write(this.toString() + "\r\n");
+			fw.write(wineAd.toString() + "\r\n");
 			this.wineAds.add(wineAd);
 			fw.close();
 		} catch (IOException e) {

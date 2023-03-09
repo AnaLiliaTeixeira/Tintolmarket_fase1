@@ -56,9 +56,9 @@ public class User {
 		return inbox;
 	}
 
-	public void createWineAd(Wine wine, int quantity, double price) {
+	public void createWineAd(Wine wine, double price, int quantity) {
 		WineAdCatalog wineAds = WineAdCatalog.getInstance();
-		wineAds.add(new WineAd(this, wine, quantity, price));
+		wineAds.add(new WineAd(this, wine, price, quantity));
 	}
 
 	public String read() throws Exception {
@@ -80,7 +80,7 @@ public class User {
 		bw.close();
 		return contents[1]; // retornar hashmap em string
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -92,7 +92,7 @@ public class User {
 		User other = (User) obj;
 		return Objects.equals(name, other.name);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.name + " " + this.balance + " " + this.inbox;
