@@ -18,7 +18,7 @@ public class TransactionHandler {
 	
 	public boolean sell(User user, String name, double price, int quantity) {
 		
-		Wine w = wineCatalog.getWine(name);
+		Wine w = wineCatalog.getWineByName(name);
 		if(w != null) {
 			user.createWineAd(w, quantity, price);
 			return true;
@@ -28,7 +28,7 @@ public class TransactionHandler {
 	
 	public boolean buy(User buyer, String wineName, User seller, int quantity) {
 		double balance = buyer.getBalance();
-		Wine wine = wineCatalog.getWine(wineName);
+		Wine wine = wineCatalog.getWineByName(wineName);
 		if(wine == null) return false;
 		
 		WineAd wad=null;

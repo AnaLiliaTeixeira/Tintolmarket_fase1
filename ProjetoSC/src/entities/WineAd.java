@@ -1,5 +1,12 @@
 package entities;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Scanner;
+
 public class WineAd {
 
 	private User user;
@@ -34,20 +41,23 @@ public class WineAd {
 		return price;
 	}
 	
-	//TODO
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("\tVendedor: " + user.getName() + "\n");
-		sb.append("\tPreco do Vinho: " + this.price + "\n");
-		sb.append("\tQuantidade disponivel: " + this.quantity + "\n");
-		return sb.toString();
+		return  user.getName() + " " + this.wine.getName() + " " + this.quantity + " " + this.price;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WineAd other = (WineAd) obj;
+		return Objects.equals(user, other.user) && Objects.equals(wine, other.wine);
 	}
 	
-	//TODO
-	// Remover vinho da lista de anuncios (pode nao ser preciso)
-	public boolean equals(Object o) {
-		return false;
-		//return this == 0 || o instanceof WineAd && ;
-	}
+
 	
 }
