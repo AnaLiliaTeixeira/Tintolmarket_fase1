@@ -11,6 +11,7 @@ import java.util.Scanner;
 import entities.User;
 import entities.Wine;
 import entities.WineAd;
+import utils.Utils;
 
 public class WineAdCatalog {
 
@@ -89,17 +90,9 @@ public class WineAdCatalog {
 		}
 	}
 
-	// TODO
 	public void remove(WineAd wineAd) {
-		try {
-			File wineAdInfo = new File("storedFiles\\wineAdsCatalog.txt");
-			FileWriter fw = new FileWriter(wineAdInfo, true);
-			fw.write(this.toString() + "\r\n");
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		this.wineAds.remove(wineAd);
+		wineAds.remove(wineAd);
+		File wineAdInfo = new File("storedFiles\\wineAdsCatalog.txt");
+		Utils.replaceLine(wineAdInfo, wineAd.toString(), "");
 	}
 }
