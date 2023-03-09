@@ -10,6 +10,7 @@ import catalogs.UserCatalog;
 import catalogs.WineAdCatalog;
 import catalogs.WineCatalog;
 import entities.User;
+import handlers.TransactionHandler;
 
 public class MainServer {
 
@@ -60,12 +61,14 @@ class ServerThread extends Thread {
 	private UserCatalog userCatalog;
 	private WineCatalog wineCatalog;
 	private WineAdCatalog wineAdCatalog;
+	private TransactionHandler th;
 
 	public ServerThread(Socket inSoc, UserCatalog userCatalog, WineCatalog wineCatalog, WineAdCatalog wineAdCatalog) {
 		this.socket = inSoc;
 		this.userCatalog = userCatalog;
 		this.wineCatalog = wineCatalog;
 		this.wineAdCatalog = wineAdCatalog;
+		this.th = new TransactionHandler(wineCatalog);
 	}
 
 	public void run() {
@@ -100,6 +103,10 @@ class ServerThread extends Thread {
 				result = wineCatalog.addWine(name, image);
 				break;
 			case "s":
+				String wine = (String) in.readObject();
+				double price = Double.parseDouble((String) in.readObject());
+				int quantity = Integer.parseInt((String) in.readObject());
+				th.sell(user, wine, price, quantity);
 				break;
 			case "v":
 				break;
