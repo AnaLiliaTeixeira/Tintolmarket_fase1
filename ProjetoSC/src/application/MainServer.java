@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import catalogs.UserCatalog;
+import catalogs.WineAdCatalog;
 import catalogs.WineCatalog;
 import entities.User;
 
@@ -14,6 +15,7 @@ public class MainServer {
 
 	private static UserCatalog userCatalog;
 	private static WineCatalog wineCatalog;
+	private static WineAdCatalog wineAdCatalog;
 
 	public static void main(String[] args) {
 
@@ -21,6 +23,7 @@ public class MainServer {
 
 		wineCatalog = WineCatalog.getInstance();
 		userCatalog = UserCatalog.getInstance();
+		wineAdCatalog = WineAdCatalog.getInstance();
 
 		try { // criar socket
 			if (args.length != 0)
@@ -34,7 +37,7 @@ public class MainServer {
 		try { // handler de cada cliente
 			while (true) {
 				Socket socket = serverSocket.accept();
-				ServerThread st = new ServerThread(socket, userCatalog, wineCatalog);
+				ServerThread st = new ServerThread(socket, userCatalog, wineCatalog, wineAdCatalog);
 				st.start();
 			}
 		} catch (Exception e) {
@@ -54,15 +57,15 @@ public class MainServer {
 class ServerThread extends Thread {
 
 	private Socket socket;
-//	private ObjectInputStream in;
-//	private ObjectOutputStream out;
 	private UserCatalog userCatalog;
 	private WineCatalog wineCatalog;
+	private WineAdCatalog wineAdCatalog;
 
-	public ServerThread(Socket inSoc, UserCatalog userCatalog, WineCatalog wineCatalog) {
+	public ServerThread(Socket inSoc, UserCatalog userCatalog, WineCatalog wineCatalog, WineAdCatalog wineAdCatalog) {
 		this.socket = inSoc;
 		this.userCatalog = userCatalog;
 		this.wineCatalog = wineCatalog;
+		this.wineAdCatalog = wineAdCatalog;
 	}
 
 	public void run() {
