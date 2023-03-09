@@ -74,6 +74,16 @@ public class User {
 		Utils.replaceLine(userInfo, oldLine, newLine);
 	}
 
+	public void addMessage(User sender, String message) {
+		String oldLine = this.toString();
+		List<String> senderMessages = this.inbox.get(sender.getName());
+		senderMessages.add(message);
+		this.inbox.put(sender.getName(), senderMessages);
+		String newLine = this.toString();
+		File userInfo = new File("storedFiles\\userCatalog.txt");
+		Utils.replaceLine(userInfo, oldLine, newLine);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
