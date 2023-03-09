@@ -74,7 +74,7 @@ class ServerThread extends Thread {
 			// fazer login do user
 			String name = userCatalog.login(in, out);
 			if (name != null)
-				interact(new User(name), in, out);
+				interact(userCatalog.getUserByName(name), in, out);
 
 			// fechar ligacoes
 			in.close();
@@ -110,7 +110,7 @@ class ServerThread extends Thread {
 			case "t":
 				String recipient = (String) in.readObject();
 				String message = (String) in.readObject();
-				result = user.talk(recipient, message);
+				result = userCatalog.talk(user, recipient, message);
 				break;
 			case "r":
 				break;

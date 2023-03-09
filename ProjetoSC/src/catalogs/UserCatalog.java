@@ -1,12 +1,16 @@
 package catalogs;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,24 +42,82 @@ public class UserCatalog {
         return instance;
     }
     
+    public void addUser(String userName) {
+    	try {
+    		User u = new User(userName, 200, new HashMap<>());
+    		this.users.add(u);
+			File userInfo = new File("storedFiles\\userCatalog.txt");
+	    	FileWriter fw = new FileWriter(userInfo, true);
+			fw.write(u.toString() + "\r\n");
+			fw.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
     private void getUsersByTextFile(File userInfo) {
 		try {
-			Scanner myReader = new Scanner(userInfo);
-			while(myReader.hasNextLine()) {
-				String data = myReader.nextLine();
-				users.add(new User(data.split(" ")[0]));
+	    	Scanner sc = new Scanner(userInfo);
+	    	while(sc.hasNextLine()) {
+				String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
+				users.add(new User(line[0], Double.parseDouble(line[1]), stringToHashMap(line[2])));
 			}
-			myReader.close();
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("An error ocurred.");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("An error ocurred.");
+	    	sc.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
-	
+	}
+
+    
+    public User getUserByName(String userName) {
+		for (User u : this.users)
+			if (u.getName().equals(userName))
+				return u;
+		return null;
+	}
+    
+    public boolean talk(User sender, String recipient, String message) throws IOException {
+		File f = new File(recipient + ".txt");
+		if (!f.exists()) // verificar se destinatario existe
+			return false;
+		FileReader fr = new FileReader(f);
+		BufferedReader br = new BufferedReader(fr);
+		String[] contents = { br.readLine(), br.readLine(), br.readLine() }; // conteudo do destinatatio
+
+		HashMap<String, List<String>> messages = stringToHashMap(contents[1]); // hashmap das mensagens de destino
+		List<String> myMessages = messages.getOrDefault(sender.getName(), new ArrayList<String>());
+		myMessages.add(message);
+		messages.put(sender.getName(), myMessages);
+		contents[1] = messages.toString();
+
+		FileWriter fw = new FileWriter(f);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.flush(); // apagar conteudo do ficheiro
+		for (String s : contents) // e reescrever com mensagem nova
+			bw.write(s);
+
+		br.close();
+		fr.close();
+		fw.close();
+		bw.close();
+		return true;
+	}
+
+    private HashMap<String, List<String>> stringToHashMap(String line) {
+		HashMap<String, List<String>> result = new HashMap<>();
+		line = line.substring(1, line.length() - 1);
+		String[] hashContents = line.split("(?!\\[.*), (?![^\\[]*?\\])");
+		if(hashContents[0].contains("=")) {
+			for (String s : hashContents) {
+				String[] item = s.split("=");
+				item[1] = item[1].substring(1, item[1].length() - 1);
+				List<String> value = Arrays.asList(item[1].split(", "));
+				result.put(item[0], value);
+			}
+		}
+		return result;
+	}	
+    
 	/**
 	 * Faz login do utilizador ou cria um utilizador novo
 	 * 
@@ -88,6 +150,7 @@ public class UserCatalog {
 
 		// se o user nao existir faz o seu registo
 		if (newUser) {
+			this.addUser(user);
 			FileWriter fw = new FileWriter("storedFiles\\userCreds.txt");
 			fw.write(user + ":" + password);
 			fw.close();

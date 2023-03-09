@@ -6,12 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 import catalogs.WineAdCatalog;
 
@@ -21,30 +18,10 @@ public class User {
 	private double balance;
 	private HashMap<String, List<String>> inbox;
 
-	public User(String name) throws IOException {
+	public User(String name, double balance, HashMap<String, List<String>> inbox) throws IOException {
 		this.name = name;
-		
-		File userInfo = new File("storedFiles\\userCatalog.txt");
-		Scanner sc = new Scanner(userInfo);
-		
-		boolean found = false;
-		while(sc.hasNextLine()) {
-			String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
-			if(line[0].equals(name)) {
-				found = true;
-				this.balance = Double.parseDouble(line[1]);
-				this.inbox = stringToHashMap(line[2]);
-			}
-		}
-		sc.close();
-		
-		if(!found) {
-			this.balance = 200;
-			this.inbox = new HashMap<>();
-			FileWriter fw = new FileWriter(userInfo, true);
-			fw.write(this.toString() + "\r\n");
-			fw.close();
-		}
+		this.balance = balance;
+		this.inbox = inbox;
 	}
 
 	/**
@@ -84,33 +61,6 @@ public class User {
 		wineAds.add(new WineAd(this, wine, quantity, price));
 	}
 
-	public boolean talk(String recipient, String message) throws IOException {
-		File f = new File(recipient + ".txt");
-		if (!f.exists()) // verificar se destinatario existe
-			return false;
-		FileReader fr = new FileReader(f);
-		BufferedReader br = new BufferedReader(fr);
-		String[] contents = { br.readLine(), br.readLine(), br.readLine() }; // conteudo do destinatatio
-
-		HashMap<String, List<String>> messages = stringToHashMap(contents[1]); // hashmap das mensagens de destino
-		List<String> myMessages = messages.getOrDefault(this.name, new ArrayList<String>());
-		myMessages.add(message);
-		messages.put(this.name, myMessages);
-		contents[1] = messages.toString();
-
-		FileWriter fw = new FileWriter(f);
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.flush(); // apagar conteudo do ficheiro
-		for (String s : contents) // e reescrever com mensagem nova
-			bw.write(s);
-
-		br.close();
-		fr.close();
-		fw.close();
-		bw.close();
-		return true;
-	}
-
 	public String read() throws Exception {
 		File userInfo = new File(name + ".txt");
 		FileReader fr = new FileReader(userInfo);
@@ -130,21 +80,6 @@ public class User {
 		bw.close();
 		return contents[1]; // retornar hashmap em string
 	}
-
-	private HashMap<String, List<String>> stringToHashMap(String line) {
-		HashMap<String, List<String>> result = new HashMap<>();
-		line = line.substring(1, line.length() - 1);
-		String[] hashContents = line.split("(?!\\[.*), (?![^\\[]*?\\])");
-		if(hashContents[0].contains("=")) {
-			for (String s : hashContents) {
-				String[] item = s.split("=");
-				item[1] = item[1].substring(1, item[1].length() - 1);
-				List<String> value = Arrays.asList(item[1].split(", "));
-				result.put(item[0], value);
-			}
-		}
-		return result;
-	}	
 	
 	@Override
 	public boolean equals(Object obj) {
