@@ -65,11 +65,10 @@ public class WineCatalog {
 		return null;
 	}
 
-	public boolean addWine(String wineName, File image) {
+	public boolean createWine(String wineName, File image) {
 		if (getWineByName(wineName) != null) {
 			return false;
 		}
-
 		try {
 			File wineInfo = new File("storedFiles\\wineCatalog.txt");
 			FileWriter fw = new FileWriter(wineInfo, true);
@@ -80,17 +79,6 @@ public class WineCatalog {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		return true;
-	}
-
-	public boolean view(String wineName) {
-		Wine wine = this.getWineByName(wineName);
-		if (wine == null) {
-			return false;
-		}
-		System.out.println("Informacoes sobre o vinho: \n");
-		System.out.println(wine.printWine());
 
 		return true;
 	}
