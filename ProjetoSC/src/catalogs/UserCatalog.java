@@ -1,9 +1,6 @@
 package catalogs;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -116,34 +113,7 @@ public class UserCatalog {
 		}
 	}
 
-	public boolean talk(User sender, String recipient, String message) throws IOException {
-		File f = new File(recipient + ".txt");
-		if (!f.exists()) // verificar se destinatario existe
-			return false;
-		FileReader fr = new FileReader(f);
-		BufferedReader br = new BufferedReader(fr);
-		String[] contents = { br.readLine(), br.readLine(), br.readLine() }; // conteudo do destinatatio
-
-		HashMap<String, List<String>> messages = stringToHashMap(contents[1]); // hashmap das mensagens de destino
-		List<String> myMessages = messages.getOrDefault(sender.getName(), new ArrayList<String>());
-		myMessages.add(message);
-		messages.put(sender.getName(), myMessages);
-		contents[1] = messages.toString();
-
-		FileWriter fw = new FileWriter(f);
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.flush(); // apagar conteudo do ficheiro
-		for (String s : contents) // e reescrever com mensagem nova
-			bw.write(s);
-
-		br.close();
-		fr.close();
-		fw.close();
-		bw.close();
-		return true;
-	}
-
-	private HashMap<String, List<String>> stringToHashMap(String line) {
+	public HashMap<String, List<String>> stringToHashMap(String line) {
 		HashMap<String, List<String>> result = new HashMap<>();
 		line = line.substring(1, line.length() - 1);
 		String[] hashContents = line.split("(?!\\[.*), (?![^\\[]*?\\])");
