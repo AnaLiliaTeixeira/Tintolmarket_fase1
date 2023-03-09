@@ -2,7 +2,10 @@ package catalogs;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,19 +38,33 @@ public class WineCatalog {
 
 	
     private void getWinesByTextFile(File wineInfo) {
+		Scanner sc = null;
 		try {
-			Scanner myReader = new Scanner(wineInfo);
-			while(myReader.hasNextLine()) {
-				String line[] = myReader.nextLine().split(" ");
-				wines.add(new Wine(line[0]));
-			}
-			myReader.close();
-			
+			sc = new Scanner(wineInfo);
 		} catch (FileNotFoundException e) {
-			System.out.println("An error ocurred.");
 			e.printStackTrace();
-		} 
+		}
+		
+		while(sc.hasNextLine()) {
+			String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
+			this.wines.add(new Wine(line[0], new File(line[1]), stringToHashMap(line[2])));
+		}
+		sc.close();
     }
+    
+    private HashMap<String, Integer> stringToHashMap(String line) {
+		HashMap<String, Integer> result = new HashMap<>();
+		line = line.substring(1, line.length() - 1);
+		String[] hashContents = line.split(", ");
+		if(hashContents[0].contains("=")) {
+			for (String s : hashContents) {
+				String[] item = s.split("=");
+				result.put(item[0], Integer.parseInt(item[1]));
+			}
+		}
+		return result;
+	}	
+    
 	/**
 	 * @return the wines
 	 */
@@ -55,7 +72,7 @@ public class WineCatalog {
 		return this.wines;
 	}
 
-	public Wine getWine(String wineName) {
+	public Wine getWineByName(String wineName) {
 		for (Wine w : this.wines)
 			if (w.getName().equals(wineName))
 				return w;
@@ -63,15 +80,25 @@ public class WineCatalog {
 	}
 
 	public boolean addWine(String wineName, File image) {
-		if (getWine(wineName) != null) {
+		if (getWineByName(wineName) != null) {
 			return false;
 		}
-		this.wines.add(new Wine(wineName, image));
+		
+		try {
+			File wineInfo = new File("storedFiles\\wineCatalog.txt");	
+			FileWriter fw = new FileWriter(wineInfo, true);
+			fw.write(this.toString() + "\r\n");
+			this.wines.add(new Wine(wineName, image, new HashMap<>()));
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return true;
 	}
 
 	public boolean view(String wineName) {
-		Wine wine = this.getWine(wineName);
+		Wine wine = this.getWineByName(wineName);
 		if (wine == null) {
 			return false;
 		}

@@ -1,13 +1,9 @@
 package entities;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 import catalogs.WineAdCatalog;
 
@@ -17,41 +13,10 @@ public class Wine {
 	private File image;
 	private HashMap<String, Integer> classifications;
 
-	public Wine(String name, File image) {
+	public Wine(String name, File image, HashMap<String, Integer> classifications) {
 		this.name = name;
 		this.image = image;
-		this.classifications = new HashMap<>();
-		
-		try {
-			File wineInfo = new File("storedFiles\\wineCatalog.txt");	
-			FileWriter fw = new FileWriter(wineInfo, true);
-			fw.write(this.toString() + "\r\n");
-			fw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
-	}
-	
-	public Wine(String name) {
-		this.name = name;
-		
-		File wineInfo = new File("storedFiles\\wineCatalog.txt");
-		Scanner sc = null;
-		try {
-			sc = new Scanner(wineInfo);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		while(sc.hasNextLine()) {
-			String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
-			if(line[0].equals(name)) {
-				this.image = new File(line[1]);
-				this.classifications = stringToHashMap(line[2]);
-				break;
-			}
-		}
-		sc.close();
+		this.classifications = classifications;
 	}
 
 	/**
@@ -122,19 +87,6 @@ public class Wine {
 		
 		return sb.toString();
 	}
-	
-	private HashMap<String, Integer> stringToHashMap(String line) {
-		HashMap<String, Integer> result = new HashMap<>();
-		line = line.substring(1, line.length() - 1);
-		String[] hashContents = line.split(", ");
-		if(hashContents[0].contains("=")) {
-			for (String s : hashContents) {
-				String[] item = s.split("=");
-				result.put(item[0], Integer.parseInt(item[1]));
-			}
-		}
-		return result;
-	}	
 	
 	@Override
 	public String toString() {
