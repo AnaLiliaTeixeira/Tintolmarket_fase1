@@ -20,7 +20,7 @@ public class WineCatalog {
 		this.wines = new ArrayList<>();
 		File wineInfo = new File("storedFiles\\wineCatalog.txt");
 		try {
-			if(!wineInfo.exists())
+			if (!wineInfo.exists())
 				wineInfo.createNewFile();
 			else
 				getWinesByTextFile(wineInfo);
@@ -36,35 +36,21 @@ public class WineCatalog {
 		return instance;
 	}
 
-	
-    private void getWinesByTextFile(File wineInfo) {
+	private void getWinesByTextFile(File wineInfo) {
 		Scanner sc = null;
 		try {
 			sc = new Scanner(wineInfo);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		while(sc.hasNextLine()) {
+
+		while (sc.hasNextLine()) {
 			String[] line = sc.nextLine().split("(?!\\{.*)\\s(?![^{]*?\\})");
 			this.wines.add(new Wine(line[0], new File(line[1]), stringToHashMap(line[2])));
 		}
 		sc.close();
-    }
-    
-    private HashMap<String, Integer> stringToHashMap(String line) {
-		HashMap<String, Integer> result = new HashMap<>();
-		line = line.substring(1, line.length() - 1);
-		String[] hashContents = line.split(", ");
-		if(hashContents[0].contains("=")) {
-			for (String s : hashContents) {
-				String[] item = s.split("=");
-				result.put(item[0], Integer.parseInt(item[1]));
-			}
-		}
-		return result;
-	}	
-    
+	}
+
 	/**
 	 * @return the wines
 	 */
@@ -83,17 +69,18 @@ public class WineCatalog {
 		if (getWineByName(wineName) != null) {
 			return false;
 		}
-		
+
 		try {
-			File wineInfo = new File("storedFiles\\wineCatalog.txt");	
+			File wineInfo = new File("storedFiles\\wineCatalog.txt");
 			FileWriter fw = new FileWriter(wineInfo, true);
-			fw.write(this.toString() + "\r\n");
-			this.wines.add(new Wine(wineName, image, new HashMap<>()));
+			Wine newWine = new Wine(wineName, image, new HashMap<>());
+			this.wines.add(newWine);
+			fw.write(newWine + "\r\n");
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return true;
 	}
 
@@ -106,5 +93,18 @@ public class WineCatalog {
 		System.out.println(wine.printWine());
 
 		return true;
+	}
+
+	private HashMap<String, Integer> stringToHashMap(String line) {
+		HashMap<String, Integer> result = new HashMap<>();
+		line = line.substring(1, line.length() - 1);
+		String[] hashContents = line.split(", ");
+		if (hashContents[0].contains("=")) {
+			for (String s : hashContents) {
+				String[] item = s.split("=");
+				result.put(item[0], Integer.parseInt(item[1]));
+			}
+		}
+		return result;
 	}
 }
