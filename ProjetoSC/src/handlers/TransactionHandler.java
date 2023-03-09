@@ -2,6 +2,7 @@ package handlers;
 
 import java.util.List;
 
+import catalogs.UserCatalog;
 import catalogs.WineAdCatalog;
 import catalogs.WineCatalog;
 import entities.User;
@@ -19,7 +20,8 @@ public class TransactionHandler {
 		return false;
 	}
 
-	public static boolean buy(User buyer, String wineName, User seller, int quantity) {
+	public static boolean buy(User buyer, String wineName, String seller, int quantity) {
+		User sellerUser = UserCatalog.getInstance().getUserByName(seller);
 		double balance = buyer.getBalance();
 		Wine wine = WineCatalog.getInstance().getWineByName(wineName);
 		if (wine == null)
@@ -30,7 +32,7 @@ public class TransactionHandler {
 		double priceToPay = 0;
 		List<WineAd> wineAds = wine.getCurrentAds();
 		for (WineAd wa : wineAds) {
-			if (wa.getUser().equals(seller)) {
+			if (wa.getUser().equals(sellerUser)) {
 				wad = wa;
 				availableQuantity = wa.getQuantity();
 				priceToPay = wa.getPrice() * quantity;
@@ -44,7 +46,7 @@ public class TransactionHandler {
 			return false;
 
 		buyer.adjustBalance(-priceToPay);
-		seller.adjustBalance(priceToPay);
+		sellerUser.adjustBalance(priceToPay);
 		wad.adjustQuantity(-quantity);
 		if (wad.getQuantity() == 0) {
 			WineAdCatalog wineAdCatalog = WineAdCatalog.getInstance();
