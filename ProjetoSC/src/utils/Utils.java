@@ -19,9 +19,10 @@ public class Utils {
 				else
 					fw.append(next);
 			}
-			newFile.renameTo(file);
 			fw.close();
 			sc.close();
+			file.delete();
+			newFile.renameTo(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
