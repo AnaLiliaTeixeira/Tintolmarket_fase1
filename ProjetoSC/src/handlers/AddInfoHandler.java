@@ -6,6 +6,7 @@ import java.io.IOException;
 import catalogs.UserCatalog;
 import catalogs.WineCatalog;
 import entities.User;
+import entities.Wine;
 
 public class AddInfoHandler {
 
@@ -13,7 +14,13 @@ public class AddInfoHandler {
 		return WineCatalog.getInstance().createWine(wineName, image);
 	}
 
-	// classify
+	public static boolean classify(User user, String wine, int stars) {
+		Wine w = WineCatalog.getInstance().getWineByName(wine);
+		if (w == null)
+			return false;
+		w.addClassification(user, stars);
+		return true;
+	}
 
 	public static boolean talk(User sender, String recipient, String message) throws IOException {
 		User destinatary = UserCatalog.getInstance().getUserByName(recipient);
