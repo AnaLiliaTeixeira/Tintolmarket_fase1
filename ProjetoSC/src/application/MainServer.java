@@ -78,8 +78,9 @@ class ServerThread extends Thread {
 
 	private void interact(User user, ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		boolean exit = false;
-		boolean result = true;
 		while (!exit) {
+			boolean customMessage = false;
+			boolean result = true;
 			String command = (String) in.readObject();
 			String arg1 = null;
 			String arg2 = null;
@@ -94,25 +95,27 @@ class ServerThread extends Thread {
 				arg1 = (String) in.readObject();
 				double price = Double.parseDouble((String) in.readObject());
 				num = Integer.parseInt((String) in.readObject());
-				TransactionHandler.sell(user, arg1, price, num);
+				result = TransactionHandler.sell(user, arg1, price, num);
 				break;
 			case "v":
 				arg1 = (String) in.readObject();
+				customMessage = true;
 				out.writeObject(ShowInfoHandler.view(arg1));
 				break;
 			case "b":
 				arg1 = (String) in.readObject();
 				arg2 = (String) in.readObject();
 				num = Integer.parseInt((String) in.readObject());
-				TransactionHandler.buy(user, arg1, arg2, num);
+				result = TransactionHandler.buy(user, arg1, arg2, num);
 				break;
 			case "w":
+				customMessage = true;
 				out.writeObject(ShowInfoHandler.wallet(user));
 				break;
 			case "c":
 				arg1 = (String) in.readObject();
 				num = Integer.parseInt((String) in.readObject());
-				AddInfoHandler.classify(user, arg1, num);
+				result = AddInfoHandler.classify(user, arg1, num);
 				break;
 			case "t":
 				String recipient = (String) in.readObject();
@@ -120,16 +123,18 @@ class ServerThread extends Thread {
 				result = AddInfoHandler.talk(user, recipient, message);
 				break;
 			case "r":
+				customMessage = true;
 				out.writeObject(ShowInfoHandler.read(user));
 				break;
 			default:
 				exit = true;
 				break;
 			}
-			if (result)
-				out.writeObject("OK");
-			else
-				out.writeObject("Erro, destinatario nao existe");
+			if (!customMessage)
+				if (result)
+					out.writeObject("OK");
+				else
+					out.writeObject("Erro, destinatario nao existe");
 		}
 	}
 

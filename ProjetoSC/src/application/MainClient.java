@@ -9,8 +9,6 @@ import java.util.Scanner;
 public class MainClient {
 
 	private static Socket socket;
-//	private static ObjectInputStream in;
-//	private static ObjectOutputStream out;
 
 	public static void main(String[] args) {
 
