@@ -134,7 +134,7 @@ class ServerThread extends Thread {
 				if (result)
 					out.writeObject("OK");
 				else
-					out.writeObject("Erro, destinatario nao existe");
+					out.writeObject("Erro");
 		}
 	}
 
