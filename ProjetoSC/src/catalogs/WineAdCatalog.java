@@ -51,8 +51,8 @@ public class WineAdCatalog {
 			String[] line = sc.nextLine().split(" ");
 			UserCatalog uc = UserCatalog.getInstance();
 			WineCatalog wc = WineCatalog.getInstance();
-			wineAds.add(new WineAd(uc.getUserByName(line[0]), wc.getWineByName(line[1]), Double.parseDouble(line[3]),
-					Integer.parseInt(line[2])));
+			wineAds.add(new WineAd(uc.getUserByName(line[0]), wc.getWineByName(line[1]), Double.parseDouble(line[2]),
+					Integer.parseInt(line[3])));
 			break;
 		}
 		sc.close();
