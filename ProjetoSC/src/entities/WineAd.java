@@ -1,6 +1,9 @@
 package entities;
 
+import java.io.File;
 import java.util.Objects;
+
+import utils.Utils;
 
 public class WineAd {
 
@@ -29,7 +32,10 @@ public class WineAd {
 	}
 
 	public void adjustQuantity(int quantity) {
+		String oldLine = this.toString();
 		this.quantity += quantity;
+		String newLine = this.toString();
+		Utils.replaceLine(new File("storedFiles\\wineAdsCatalog.txt"), oldLine, newLine);
 	}
 
 	public double getPrice() {
