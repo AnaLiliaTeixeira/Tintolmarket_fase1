@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import catalogs.WineAdCatalog;
+import utils.Utils;
 
 public class Wine {
 
@@ -46,7 +47,7 @@ public class Wine {
 	public void setImage(File image) {
 		this.image = image;
 	}
-	
+
 	public List<WineAd> getCurrentAds() {
 		WineAdCatalog wineAds = WineAdCatalog.getInstance();
 		return wineAds.getWineAdsByWine(this);
@@ -66,7 +67,11 @@ public class Wine {
 	 * @param stars - the numerical value
 	 */
 	public void addClassification(User user, Integer stars) {
-		classifications.put(user.getName(), stars);
+		String oldLine = this.toString();
+		this.classifications.put(user.getName(), stars);
+		String newLine = this.toString();
+		File wineInfo = new File("storedFiles\\\\wineCatalog.txt");
+		Utils.replaceLine(wineInfo, oldLine, newLine);
 	}
 
 	public String printWine() {
@@ -77,17 +82,16 @@ public class Wine {
 			avg += i;
 		}
 		avg /= classifications.size();
-		
+
 		sb.append("Media das classificacoes: " + avg + "\n");
 		sb.append("Informacoes de venda do vinho: ");
-		
-		for (WineAd ad : getCurrentAds()) {
+
+		for (WineAd ad : getCurrentAds())
 			sb.append(ad + "\n");
-		}
-		
+
 		return sb.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.name + " " + this.image.getName() + " " + this.classifications;
