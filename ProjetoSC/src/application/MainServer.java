@@ -83,7 +83,7 @@ class ServerThread extends Thread {
 			String command = (String) in.readObject();
 			String arg1 = null;
 			String arg2 = null;
-			int quantity;
+			int num;
 			switch (command) {
 			case "a":
 				arg1 = (String) in.readObject();
@@ -93,23 +93,26 @@ class ServerThread extends Thread {
 			case "s":
 				arg1 = (String) in.readObject();
 				double price = Double.parseDouble((String) in.readObject());
-				quantity = Integer.parseInt((String) in.readObject());
-				TransactionHandler.sell(user, arg1, price, quantity);
+				num = Integer.parseInt((String) in.readObject());
+				TransactionHandler.sell(user, arg1, price, num);
 				break;
 			case "v":
 				arg1 = (String) in.readObject();
-				out.writeObject(ShowInfoHandler.view(arg2));
+				out.writeObject(ShowInfoHandler.view(arg1));
 				break;
 			case "b":
 				arg1 = (String) in.readObject();
 				arg2 = (String) in.readObject();
-				quantity = Integer.parseInt((String) in.readObject());
-				TransactionHandler.buy(user, arg1, arg2, quantity);
+				num = Integer.parseInt((String) in.readObject());
+				TransactionHandler.buy(user, arg1, arg2, num);
 				break;
 			case "w":
 				out.writeObject(ShowInfoHandler.wallet(user));
 				break;
 			case "c":
+				arg1 = (String) in.readObject();
+				num = Integer.parseInt((String) in.readObject());
+				AddInfoHandler.classify(user, arg1, num);
 				break;
 			case "t":
 				String recipient = (String) in.readObject();
