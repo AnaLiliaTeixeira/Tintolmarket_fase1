@@ -9,7 +9,7 @@ public class ShowInfoHandler {
 	public static String view(String wineName) {
 		Wine wine = WineCatalog.getInstance().getWineByName(wineName);
 		if (wine == null)
-			return null;
+			return "O vinho nao existe";
 		return wine.printWine();
 	}
 
@@ -19,6 +19,8 @@ public class ShowInfoHandler {
 
 	public static String read(User user) {
 		String inbox = user.inboxToString();
+		if (inbox.equals(""))
+			return "Nao tem mensagens";
 		user.deleteMessages();
 		return inbox;
 	}
