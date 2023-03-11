@@ -2,6 +2,7 @@ package entities;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -78,7 +79,7 @@ public class User {
 
 	public void addMessage(User sender, String message) {
 		String oldLine = this.toString();
-		List<String> senderMessages = this.inbox.get(sender.getName());
+		List<String> senderMessages = this.inbox.getOrDefault(sender.getName(), new ArrayList<>());
 		senderMessages.add(message);
 		this.inbox.put(sender.getName(), senderMessages);
 		String newLine = this.toString();
