@@ -21,8 +21,12 @@ public class TransactionHandler {
 	}
 
 	public static boolean buy(User buyer, String wineName, String seller, int quantity) {
-		User sellerUser = UserCatalog.getInstance().getUserByName(seller);
 		double balance = buyer.getBalance();
+
+		User sellerUser = UserCatalog.getInstance().getUserByName(seller);
+		if (sellerUser == null)
+			return false;
+
 		Wine wine = WineCatalog.getInstance().getWineByName(wineName);
 		if (wine == null)
 			return false;
