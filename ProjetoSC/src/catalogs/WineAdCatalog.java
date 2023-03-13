@@ -38,7 +38,7 @@ public class WineAdCatalog {
 		}
 		return instance;
 	}
-
+	
 	private void getWineAdsByTextFile(File wineAdsInfo) {
 		Scanner sc = null;
 		try {
