@@ -57,9 +57,17 @@ public class User {
 		return inbox;
 	}
 
-	public void createWineAd(Wine wine, double price, int quantity) {
+	public WineAd createWineAd(Wine wine, double price, int quantity) {
 		WineAdCatalog wineAds = WineAdCatalog.getInstance();
-		wineAds.add(new WineAd(this, wine, price, quantity));
+		WineAd wa = new WineAd(this, wine, price, quantity);
+		for (WineAd wad : wineAds.getWineAdsByUser(this)) {
+			if (wad.equals(wa)) {
+				wineAds.remove(wad);
+				break;
+			}
+		}
+		wineAds.add(wa);
+		return wa;
 	}
 
 	public String inboxToString() {
