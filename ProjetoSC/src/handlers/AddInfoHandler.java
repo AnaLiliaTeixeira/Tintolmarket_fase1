@@ -16,7 +16,7 @@ public class AddInfoHandler {
 
 	public static boolean classify(User user, String wine, int stars) {
 		Wine w = WineCatalog.getInstance().getWineByName(wine);
-		if (w == null)
+		if (w == null || stars<1 || stars>6)
 			return false;
 		w.addClassification(user, stars);
 		return true;
