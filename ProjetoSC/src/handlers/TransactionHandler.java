@@ -14,8 +14,9 @@ public class TransactionHandler {
 	public static boolean sell(User user, String name, double price, int quantity) {
 		Wine w = WineCatalog.getInstance().getWineByName(name);
 		if (w != null) {
-			WineAd wad = user.createWineAd(w, price, quantity);
-			wad.adjustQuantityAndPrice(quantity, price);
+			//WineAd wad = 
+			user.createWineAd(w, price, quantity);
+			//wad.adjustQuantityAndPrice(quantity, price);
 			return true;
 		}
 		return false;

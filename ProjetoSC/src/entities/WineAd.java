@@ -60,4 +60,8 @@ public class WineAd {
 		return Objects.equals(user, other.user) && Objects.equals(wine, other.wine);
 	}
 
+	public void setQuantity(int i) {
+		this.quantity=i;
+	}
+
 }

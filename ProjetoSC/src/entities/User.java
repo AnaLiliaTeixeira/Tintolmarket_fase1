@@ -62,7 +62,11 @@ public class User {
 		WineAd wa = new WineAd(this, wine, price, quantity);
 		for (WineAd wad : wineAds.getWineAdsByUser(this)) {
 			if (wad.equals(wa)) {
-				wineAds.remove(wad);
+				wa.setQuantity(wad.getQuantity()+quantity);
+				String oldLine = wad.toString();
+				String newLine = wa.toString();
+				Utils.replaceLine(new File("storedFiles\\wineAdsCatalog.txt"), oldLine, newLine);
+				wineAds.remove(wa);
 				break;
 			}
 		}
