@@ -70,7 +70,7 @@ public class Wine {
 		String oldLine = this.toString();
 		this.classifications.put(user.getName(), stars);
 		String newLine = this.toString();
-		File wineInfo = new File("storedFiles\\\\wineCatalog.txt");
+		File wineInfo = new File("storedFiles\\wineCatalog.txt");
 		Utils.replaceLine(wineInfo, oldLine, newLine);
 	}
 
@@ -81,14 +81,20 @@ public class Wine {
 		for (int i : classifications.values()) {
 			avg += i;
 		}
-		avg /= classifications.size();
-
+		if(avg != 0) {
+			avg /= classifications.size();
+		}
+			
 		sb.append("Media das classificacoes: " + avg + "\n");
 		sb.append("Informacoes de venda do vinho: ");
 
-		for (WineAd ad : getCurrentAds())
-			sb.append(ad + "\n");
-
+		if(getCurrentAds().isEmpty()) {
+			sb.append("N/A");
+		}
+		else {
+			for (WineAd ad : getCurrentAds())
+				sb.append(ad + "\n");
+		}
 		return sb.toString();
 	}
 
