@@ -18,6 +18,7 @@ public class Utils {
 					fw.append(newLine);
 				else
 					fw.append(next);
+				fw.append("\n");
 			}
 			fw.close();
 			sc.close();
