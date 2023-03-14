@@ -1,5 +1,6 @@
 package exceptions;
 
-public class WineNotFoundException {
+@SuppressWarnings("serial")
+public class WineNotFoundException extends Exception {
 
 }
