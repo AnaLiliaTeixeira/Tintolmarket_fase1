@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import entities.User;
+import exceptions.WrongCredentialsException;
 
 public class UserCatalog {
 
@@ -43,9 +44,12 @@ public class UserCatalog {
 	 * Faz login do utilizador ou cria um utilizador novo
 	 * 
 	 * @return o username se login com sucesso ou null, caso contrario
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 * @throws WrongCredentialsException 
 	 * @throws Exception se ocorrer erro ao ler ou escrever
 	 */
-	public String login(ObjectInputStream in, ObjectOutputStream out) throws Exception {
+	public String login(ObjectInputStream in, ObjectOutputStream out) throws ClassNotFoundException, IOException, WrongCredentialsException {
 
 		File users = new File("storedFiles\\userCreds.txt");
 		users.createNewFile();
@@ -64,7 +68,7 @@ public class UserCatalog {
 				break;
 			} else if (line.startsWith(user)) { // se for a pass errada
 				sc.close();
-				return null;
+				throw new WrongCredentialsException("Nao e possivel iniciar sessão. Verifique as suas credenciais.");
 			}
 		}
 		sc.close();

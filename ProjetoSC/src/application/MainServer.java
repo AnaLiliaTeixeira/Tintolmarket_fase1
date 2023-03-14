@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -8,6 +9,7 @@ import java.net.Socket;
 
 import catalogs.UserCatalog;
 import entities.User;
+import exceptions.WrongCredentialsException;
 import handlers.AddInfoHandler;
 import handlers.ShowInfoHandler;
 import handlers.TransactionHandler;
@@ -18,14 +20,16 @@ public class MainServer {
 
 		ServerSocket serverSocket = null;
 
-		try { // criar socket
+		 // criar socket
+		try {
 			if (args.length != 0)
 				serverSocket = new ServerSocket(Integer.parseInt(args[0]));
 			else
 				serverSocket = new ServerSocket(12345);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e1) {
+			System.err.println("Erro na conexao com cliente");
 		}
+
 
 		try { // handler de cada cliente
 			while (true) {
@@ -34,13 +38,13 @@ public class MainServer {
 				st.start();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 
-		try { // fechar server
+		try {
 			serverSocket.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Erro ao fechar socket.");
 		}
 	}
 
@@ -56,6 +60,7 @@ class ServerThread extends Thread {
 	}
 
 	public void run() {
+	
 		try {
 			// iniciar streams
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -72,7 +77,7 @@ class ServerThread extends Thread {
 			out.close();
 			socket.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 	}
 
