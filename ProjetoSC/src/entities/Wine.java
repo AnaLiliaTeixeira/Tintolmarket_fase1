@@ -112,6 +112,6 @@ public class Wine {
 			return false;
 		}
 		Wine other = (Wine) obj;
-		return Objects.equals(image, other.image) && Objects.equals(name, other.name);
+		return Objects.equals(name, other.name);
 	}
 }
