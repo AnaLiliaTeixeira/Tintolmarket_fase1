@@ -61,7 +61,7 @@ public class MainClient {
 
 		Scanner sc = new Scanner(System.in);
 		while (true) {
-			System.out.print("Insira um comando: ");
+			System.out.print("\nInsira um comando: ");
 			String line = sc.nextLine();
 			String[] tokens = line.split(" ");
 			if (tokens[0].equals("a") || tokens[0].equals("add")) {
@@ -88,9 +88,13 @@ public class MainClient {
 				out.writeObject(tokens[1]);
 				out.writeObject(tokens[2]);
 			} else if (tokens[0].equals("t") || tokens[0].equals("talk")) {
+				StringBuilder sb = new StringBuilder();
+				for (int i = 2; i < tokens.length; i++) {
+					sb.append(tokens[i] + " ");
+				}
 				out.writeObject("t");
 				out.writeObject(tokens[1]);
-				out.writeObject(tokens[2]);
+				out.writeObject(sb.toString());
 			} else if (tokens[0].equals("r") || tokens[0].equals("read")) {
 				out.writeObject("r");
 			} else {
