@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import entities.Wine;
+import exceptions.RepeatedWineException;
 
 public class WineCatalog {
 
@@ -60,14 +61,14 @@ public class WineCatalog {
 
 	public Wine getWineByName(String wineName) {
 		for (Wine w : this.wines)
-			if (w.getName().equals(wineName))
+			if (wineName.equals(w.getName()))
 				return w;
 		return null;
 	}
 
-	public boolean createWine(String wineName, File image) {
+	public void createWine(String wineName, File image) throws RepeatedWineException {
 		if (getWineByName(wineName) != null) {
-			return false;
+			throw new RepeatedWineException("Ja existe um vinho com o mesmo nome.");
 		}
 		try {
 			File wineInfo = new File("storedFiles\\wineCatalog.txt");
@@ -79,8 +80,6 @@ public class WineCatalog {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		return true;
 	}
 
 	private HashMap<String, Integer> stringToHashMap(String line) {

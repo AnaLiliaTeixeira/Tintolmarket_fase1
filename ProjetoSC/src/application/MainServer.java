@@ -78,63 +78,62 @@ class ServerThread extends Thread {
 
 	private void interact(User user, ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		boolean exit = false;
-		while (!exit) {
-			boolean customMessage = false;
-			boolean result = true;
+		while (!exit) {	
 			String command = (String) in.readObject();
 			String arg1 = null;
 			String arg2 = null;
 			int num;
-			switch (command) {
-			case "a":
-				arg1 = (String) in.readObject();
-				File image = (File) in.readObject();
-				result = AddInfoHandler.add(arg1, image);
-				break;
-			case "s":
-				arg1 = (String) in.readObject();
-				double price = Double.parseDouble((String) in.readObject());
-				num = Integer.parseInt((String) in.readObject());
-				result = TransactionHandler.sell(user, arg1, price, num);
-				break;
-			case "v":
-				arg1 = (String) in.readObject();
-				customMessage = true;
-				out.writeObject(ShowInfoHandler.view(arg1));
-				break;
-			case "b":
-				arg1 = (String) in.readObject();
-				arg2 = (String) in.readObject();
-				num = Integer.parseInt((String) in.readObject());
-				result = TransactionHandler.buy(user, arg1, arg2, num);
-				break;
-			case "w":
-				customMessage = true;
-				out.writeObject(ShowInfoHandler.wallet(user));
-				break;
-			case "c":
-				arg1 = (String) in.readObject();
-				num = Integer.parseInt((String) in.readObject());
-				result = AddInfoHandler.classify(user, arg1, num);
-				break;
-			case "t":
-				String recipient = (String) in.readObject();
-				String message = (String) in.readObject();
-				result = AddInfoHandler.talk(user, recipient, message);
-				break;
-			case "r":
-				customMessage = true;
-				out.writeObject(ShowInfoHandler.read(user));
-				break;
-			default:
-				exit = true;
-				break;
+			try {
+				switch (command) {
+				case "a":
+					arg1 = (String) in.readObject();
+					File image = (File) in.readObject();
+					AddInfoHandler.add(arg1, image);
+					out.writeObject(String.format("Vinho %s adicionado com sucesso!", arg1));
+					break;
+				case "s":
+					arg1 = (String) in.readObject();
+					double price = Double.parseDouble((String) in.readObject());
+					num = Integer.parseInt((String) in.readObject());
+					TransactionHandler.sell(user, arg1, price, num);
+					out.writeObject(String.format("%d quantidade(s) de vinho %s colocada(s) a venda por %.2f com sucesso!", num, arg1, price));
+					break;
+				case "v":
+					arg1 = (String) in.readObject();
+					out.writeObject(ShowInfoHandler.view(arg1));
+					break;
+				case "b":
+					arg1 = (String) in.readObject();
+					arg2 = (String) in.readObject();
+					num = Integer.parseInt((String) in.readObject());
+					TransactionHandler.buy(user, arg1, arg2, num);
+					out.writeObject(String.format("O utilizador %s comprou %d unidades de vinho %s", arg2, num, arg1));
+					break;
+				case "w":
+					out.writeObject(ShowInfoHandler.wallet(user));
+					break;
+				case "c":
+					arg1 = (String) in.readObject();
+					num = Integer.parseInt((String) in.readObject());
+					AddInfoHandler.classify(user, arg1, num);
+					out.writeObject(String.format("Atribuiu %d estrelas ao vinho %s", num, arg1));
+					break;
+				case "t":
+					String recipient = (String) in.readObject();
+					String message = (String) in.readObject();
+					AddInfoHandler.talk(user, recipient, message);
+					out.writeObject(String.format("Enviou a mensagem \"%s\" ao utilizador %s", message, recipient));
+					break;
+				case "r":
+					out.writeObject(ShowInfoHandler.read(user));
+					break;
+				default:
+					exit = true;
+					break;
+				}
+			} catch (Exception e) {
+				out.writeObject(e.getMessage());
 			}
-			if (!customMessage)
-				if (result)
-					out.writeObject("OK");
-				else
-					out.writeObject("Erro");
 		}
 	}
 
