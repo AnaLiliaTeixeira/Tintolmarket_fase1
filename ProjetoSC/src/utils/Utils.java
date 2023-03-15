@@ -8,17 +8,17 @@ public class Utils {
 
 	public static void replaceLine(File file, String oldLine, String newLine) {
 		try {
-			File newFile = new File("storedFiles//temp.txt");
-			FileWriter fw = new FileWriter(newFile, true);
+			File newFile = new File("temp.txt");
 			newFile.createNewFile();
+			FileWriter fw = new FileWriter(newFile, true);
 			Scanner sc = new Scanner(file);
 			while (sc.hasNextLine()) {
 				String next = sc.nextLine();
-				if (next.equals(oldLine))
-					fw.append(newLine);
-				else
-					fw.append(next);
-				fw.append("\n");
+				if (next.equals(oldLine)) {
+					if(newLine != null)
+						fw.append(newLine + "\n");
+				} else
+					fw.append(next + "\n");
 			}
 			fw.close();
 			sc.close();
