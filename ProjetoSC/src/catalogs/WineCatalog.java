@@ -19,7 +19,7 @@ public class WineCatalog {
 
 	private WineCatalog() {
 		this.wines = new ArrayList<>();
-		File wineInfo = new File("storedFiles\\wineCatalog.txt");
+		File wineInfo = new File("wineCatalog.txt");
 		try {
 			if (!wineInfo.exists())
 				wineInfo.createNewFile();
@@ -71,7 +71,7 @@ public class WineCatalog {
 			throw new RepeatedWineException("Ja existe um vinho com o mesmo nome.");
 		}
 		try {
-			File wineInfo = new File("storedFiles\\wineCatalog.txt");
+			File wineInfo = new File("wineCatalog.txt");
 			FileWriter fw = new FileWriter(wineInfo, true);
 			Wine newWine = new Wine(wineName, image, new HashMap<>());
 			this.wines.add(newWine);

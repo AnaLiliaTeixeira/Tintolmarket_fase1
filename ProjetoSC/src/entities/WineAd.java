@@ -33,10 +33,10 @@ public class WineAd {
 
 	public void adjustQuantityAndPrice(int quantity, double price) {
 		String oldLine = this.toString();
-		this.quantity = quantity;
+		this.quantity += quantity;
 		this.price = price;
 		String newLine = this.toString();
-		Utils.replaceLine(new File("storedFiles\\wineAdsCatalog.txt"), oldLine, newLine);
+		Utils.replaceLine(new File("wineAdsCatalog.txt"), oldLine, newLine);
 	}
 
 	public double getPrice() {
