@@ -12,11 +12,19 @@ import java.util.Scanner;
 import entities.Wine;
 import exceptions.RepeatedWineException;
 
+/**
+
+	A classe WineCatalog é responsável por gerir o catálogo de vinhos. Esta classe permite criar, obter e armazenar informações sobre vinhos.
+*/
 public class WineCatalog {
 
 	private List<Wine> wines;
 	private static WineCatalog instance;
 
+/**
+
+	Construtor privado da classe WineCatalog.
+*/
 	private WineCatalog() {
 		this.wines = new ArrayList<>();
 		File wineInfo = new File("wineCatalog.txt");
@@ -30,6 +38,11 @@ public class WineCatalog {
 		}
 	}
 
+/**
+
+	Retorna uma instância do catálogo de vinhos.
+	@return uma instância do catálogo de vinhos.
+*/
 	public static WineCatalog getInstance() {
 		if (instance == null) {
 			instance = new WineCatalog();
@@ -37,6 +50,11 @@ public class WineCatalog {
 		return instance;
 	}
 
+/**
+
+	Lê e armazena os vinhos do arquivo de texto wineInfo.
+	@param wineInfo O arquivo de texto com as informações dos vinhos.
+*/
 	private void getWinesByTextFile(File wineInfo) {
 		Scanner sc = null;
 		try {
@@ -52,13 +70,21 @@ public class WineCatalog {
 		sc.close();
 	}
 
-	/**
-	 * @return the wines
-	 */
+/**
+
+	Retorna a lista de vinhos.
+	@return a lista de vinhos.
+*/
 	public List<Wine> getWines() {
 		return this.wines;
 	}
 
+/**
+
+	Retorna um vinho com base no seu nome.
+	@param wineName O nome do vinho a ser pesquisado.
+	@return O vinho encontrado ou null se não encontrado.
+*/
 	public Wine getWineByName(String wineName) {
 		for (Wine w : this.wines)
 			if (wineName.equals(w.getName()))
@@ -66,6 +92,13 @@ public class WineCatalog {
 		return null;
 	}
 
+/**
+
+	Cria um novo vinho e adiciona-o ao catálogo e ao arquivo de texto.
+	@param wineName O nome do novo vinho.
+	@param image O arquivo de imagem do novo vinho.
+	@throws RepeatedWineException Se já existir um vinho com o mesmo nome.
+*/
 	public void createWine(String wineName, File image) throws RepeatedWineException {
 		if (getWineByName(wineName) != null) {
 			throw new RepeatedWineException("Ja existe um vinho com o mesmo nome.");
@@ -82,6 +115,12 @@ public class WineCatalog {
 		}
 	}
 
+/**
+
+	Converte uma string em um HashMap.
+	@param line A string a ser convertida.
+	@return O HashMap convertido.
+*/
 	private HashMap<String, Integer> stringToHashMap(String line) {
 		HashMap<String, Integer> result = new HashMap<>();
 		line = line.substring(1, line.length() - 1);
