@@ -13,12 +13,20 @@ import entities.Wine;
 import entities.WineAd;
 import utils.Utils;
 
+/**
+
+	A classe WineAdCatalog é responsável por gerir o catálogo de anúncios de vinho. Esta classe permite adicionar, remover e obter anúncios de vinho por utilizador ou vinho.
+*/
 public class WineAdCatalog {
 
 	// Private static instance variable of the class
 	private static WineAdCatalog instance;
 	private List<WineAd> wineAds;
 
+/**
+
+	Construtor privado da classe WineAdCatalog.
+*/
 	private WineAdCatalog() {
 		wineAds = new ArrayList<>();
 		File wineAdsInfo = new File("wineAdsCatalog.txt");
@@ -32,6 +40,11 @@ public class WineAdCatalog {
 		}
 	}
 
+/**
+
+	Retorna uma instância do catálogo de anúncios de vinho.
+	@return uma instância do catálogo de anúncios de vinho.
+*/
 	public static WineAdCatalog getInstance() {
 		if (instance == null) {
 			instance = new WineAdCatalog();
@@ -39,6 +52,11 @@ public class WineAdCatalog {
 		return instance;
 	}
 	
+/**
+
+	Lê e armazena os anúncios de vinho do arquivo de texto wineAdsInfo.
+	@param wineAdsInfo O arquivo de texto com as informações dos anúncios de vinho.
+*/
 	private void getWineAdsByTextFile(File wineAdsInfo) {
 		Scanner sc = null;
 		try {
@@ -58,6 +76,12 @@ public class WineAdCatalog {
 		sc.close();
 	}
 
+/**
+
+	Retorna uma lista de anúncios de vinho associados a um utilizador específico.
+	@param user O utilizador a ser pesquisado.
+	@return Uma lista de anúncios de vinho associados ao utilizador.
+*/
 	public List<WineAd> getWineAdsByUser(User user) {
 		List<WineAd> list = new ArrayList<>();
 		for (WineAd ad : wineAds) {
@@ -68,6 +92,12 @@ public class WineAdCatalog {
 		return list;
 	}
 
+/**
+
+	Retorna uma lista de anúncios de vinho associados a um vinho específico.
+	@param wine O vinho a ser pesquisado.
+	@return Uma lista de anúncios de vinho associados ao vinho.
+*/
 	public List<WineAd> getWineAdsByWine(Wine wine) {
 		List<WineAd> list = new ArrayList<>();
 		for (WineAd ad : wineAds) {
@@ -78,6 +108,11 @@ public class WineAdCatalog {
 		return list;
 	}
 
+/**
+
+	Adiciona um novo anúncio de vinho ao catálogo e ao arquivo de texto.
+	@param wineAd O anúncio de vinho a ser adicionado.
+*/
 	public void add(WineAd wineAd) {
 		try {
 			File wineAdInfo = new File("wineAdsCatalog.txt");
@@ -90,6 +125,11 @@ public class WineAdCatalog {
 		}
 	}
 
+/**
+
+	Remove um anúncio de vinho do catálogo e do arquivo de texto.
+	@param wineAd O anúncio de vinho a ser removido.
+*/
 	public void remove(WineAd wineAd) {
 		wineAds.remove(wineAd);
 		File wineAdInfo = new File("wineAdsCatalog.txt");
