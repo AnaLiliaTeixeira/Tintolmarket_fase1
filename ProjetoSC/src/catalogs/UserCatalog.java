@@ -14,12 +14,20 @@ import java.util.Scanner;
 import entities.User;
 import exceptions.WrongCredentialsException;
 
+/**
+
+	A classe UserCatalog é responsável por gerir o catálogo de utilizadores. Esta classe permite criar um novo utilizador, adicionar um utilizador e fazer login de um utilizador.
+*/
 public class UserCatalog {
 
 	// Private static instance variable of the class
 	private static UserCatalog instance;
 	private List<User> users;
 
+/**
+
+	Construtor privado da classe UserCatalog.
+*/
 	private UserCatalog() {
 		users = new ArrayList<>();
 		File userInfo = new File("userCatalog.txt");
@@ -33,11 +41,11 @@ public class UserCatalog {
 		}
 	}
 
-	/**
-	 * Retorna uma instancia do catalogo de utilizadores.
-	 * 
-	 * @return uma instancia do catalogo de utilizadores.
-	 */
+/**
+
+	Retorna uma instância do catálogo de utilizadores.
+	@return uma instância do catálogo de utilizadores.
+*/
 	public static UserCatalog getInstance() {
 		if (instance == null) {
 			instance = new UserCatalog();
@@ -45,15 +53,14 @@ public class UserCatalog {
 		return instance;
 	}
 
-	/**
-	 * Faz login do utilizador ou cria um utilizador novo.
-	 * 
-	 * @return o username se login com sucesso ou null, caso contrario
-	 * @throws IOException 
-	 * @throws ClassNotFoundException 
-	 * @throws WrongCredentialsException 
-	 * @throws Exception se ocorrer erro ao ler ou escrever
-	 */
+/**
+
+	Efetua o login do utilizador ou cria um novo utilizador.
+	@return o nome de utilizador se o login for bem-sucedido, ou null caso contrário.
+	@throws IOException Se ocorrer um erro ao ler ou escrever.
+	@throws ClassNotFoundException Se a classe não for encontrada.
+	@throws WrongCredentialsException Se as credenciais estiverem incorretas.
+*/
 	public String login(ObjectInputStream in, ObjectOutputStream out) throws ClassNotFoundException, IOException, WrongCredentialsException {
 
 		File users = new File("userCreds.txt");
@@ -90,6 +97,11 @@ public class UserCatalog {
 		return user;
 	}
 
+/**
+
+	Lê e armazena os utilizadores do ficheiro de texto userInfo.
+	@param userInfo O arquivo de texto com as informações dos utilizadores.
+*/
 	private void getUsersByTextFile(File userInfo) {
 		try {
 			Scanner sc = new Scanner(userInfo);
@@ -103,6 +115,12 @@ public class UserCatalog {
 		}
 	}
 
+/**
+
+	Retorna um objeto User com base no nome do utilizador.
+	@param userName O nome do utilizador.
+	@return Um objeto User correspondente ao nome do utilizador.
+*/
 	public User getUserByName(String userName) {
 		for (User u : this.users)
 			if (u.getName().equals(userName))
@@ -110,6 +128,11 @@ public class UserCatalog {
 		return null;
 	}
 
+/**
+
+	Adiciona um novo utilizador à lista de utilizadores e ao arquivo de texto.
+	@param userName O nome do novo utilizador.
+*/
 	public void addUser(String userName) {
 		try {
 			User u = new User(userName, 200, new HashMap<>());
@@ -123,6 +146,12 @@ public class UserCatalog {
 		}
 	}
 
+/**
+
+	Converte uma string em um HashMap de strings e listas de strings.
+	@param line A string a ser convertida.
+	@return Um HashMap com strings como chaves e listas de strings como valores.
+*/
 	public HashMap<String, List<String>> stringToHashMap(String line) {
 		HashMap<String, List<String>> result = new HashMap<>();
 		line = line.substring(1, line.length() - 1);
