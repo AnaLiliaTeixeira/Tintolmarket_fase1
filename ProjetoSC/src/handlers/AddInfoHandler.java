@@ -19,7 +19,9 @@ public class AddInfoHandler {
 
 	public static void classify(User user, String wine, int stars) throws WineNotFoundException {
 		Wine w = WineCatalog.getInstance().getWineByName(wine);
-		if (w == null || stars < 1 || stars > 6)
+		if (stars < 1 || stars > 5)
+			throw new IllegalArgumentException("Classificacao invalida. Sao permitidos valores entre 1 e 5.");
+		if (w == null )
 			throw new WineNotFoundException("O vinho nao existe");
 		w.addClassification(user, stars);
 	}
