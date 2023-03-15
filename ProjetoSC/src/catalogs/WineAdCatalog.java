@@ -21,7 +21,7 @@ public class WineAdCatalog {
 
 	private WineAdCatalog() {
 		wineAds = new ArrayList<>();
-		File wineAdsInfo = new File("storedFiles\\wineAdsCatalog.txt");
+		File wineAdsInfo = new File("wineAdsCatalog.txt");
 		try {
 			if (!wineAdsInfo.exists())
 				wineAdsInfo.createNewFile();
@@ -80,7 +80,7 @@ public class WineAdCatalog {
 
 	public void add(WineAd wineAd) {
 		try {
-			File wineAdInfo = new File("storedFiles\\wineAdsCatalog.txt");
+			File wineAdInfo = new File("wineAdsCatalog.txt");
 			FileWriter fw = new FileWriter(wineAdInfo, true);
 			fw.write(wineAd.toString() + "\r\n");
 			this.wineAds.add(wineAd);
@@ -92,7 +92,7 @@ public class WineAdCatalog {
 
 	public void remove(WineAd wineAd) {
 		wineAds.remove(wineAd);
-		File wineAdInfo = new File("storedFiles\\wineAdsCatalog.txt");
+		File wineAdInfo = new File("wineAdsCatalog.txt");
 		Utils.replaceLine(wineAdInfo, wineAd.toString(), null);
 	}
 }
