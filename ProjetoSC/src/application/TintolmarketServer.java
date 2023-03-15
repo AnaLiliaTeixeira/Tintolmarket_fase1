@@ -9,11 +9,12 @@ import java.net.Socket;
 
 import catalogs.UserCatalog;
 import entities.User;
+import exceptions.WrongCredentialsException;
 import handlers.AddInfoHandler;
 import handlers.ShowInfoHandler;
 import handlers.TransactionHandler;
 
-public class MainServer {
+public class TintolmarketServer {
 
 	public static void main(String[] args) {
 
@@ -43,7 +44,7 @@ public class MainServer {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			System.err.println("Erro ao fechar socket.");
+			System.out.println("Erro ao fechar socket.");
 		}
 	}
 
@@ -60,23 +61,40 @@ class ServerThread extends Thread {
 
 	public void run() {
 	
+		ObjectOutputStream out = null;
+		ObjectInputStream in = null;
+
 		try {
 			// iniciar streams
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
 
 			// fazer login do user
 			UserCatalog userCatalog = UserCatalog.getInstance();
 			String name = userCatalog.login(in, out);
-			if (name != null)
+			if (name != null) {
+				out.writeObject(true);
 				interact(userCatalog.getUserByName(name), in, out);
+			}
 
-			// fechar ligacoes
-			in.close();
-			out.close();
-			socket.close();
+		} catch (WrongCredentialsException e) {
+			try {
+				System.out.println(e.getMessage());
+				out.writeObject(false);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		} catch (Exception e) {
-			e.getMessage();
+			e.printStackTrace();
+		} finally {
+			try {
+				// fechar ligacoes
+				in.close();
+				out.close();
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
