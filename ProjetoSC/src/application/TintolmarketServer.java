@@ -14,6 +14,10 @@ import handlers.AddInfoHandler;
 import handlers.ShowInfoHandler;
 import handlers.TransactionHandler;
 
+/**
+
+	Classe principal do servidor Tintolmarket.
+ */
 public class TintolmarketServer {
 
 	public static void main(String[] args) {
@@ -50,7 +54,10 @@ public class TintolmarketServer {
 
 }
 
-// Threads utilizadas para comunicacao com os clientes
+/**
+
+	Classe ServerThread que representa uma thread para comunicação com os clientes.
+*/
 class ServerThread extends Thread {
 
 	private Socket socket;
@@ -98,6 +105,14 @@ class ServerThread extends Thread {
 		}
 	}
 
+/**
+	Método para interagir com o usuário após a autenticação bem sucedida.
+ 
+    @param user instância do usuário logado
+    @param in   ObjectInputStream para receber informações do cliente
+    @param out  ObjectOutputStream para enviar informações ao cliente
+    @throws Exception em caso de erro na comunicação com o cliente
+*/
 	private void interact(User user, ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		boolean exit = false;
 		while (!exit) {	

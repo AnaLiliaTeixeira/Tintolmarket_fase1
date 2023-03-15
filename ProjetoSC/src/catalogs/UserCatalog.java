@@ -56,6 +56,8 @@ public class UserCatalog {
 /**
 
 	Efetua o login do utilizador ou cria um novo utilizador.
+	@param in  ObjectInputStream para ler dados do servidor.
+	@param out ObjectOutputStream para enviar dados para o servidor.
 	@return o nome de utilizador se o login for bem-sucedido, ou null caso contrário.
 	@throws IOException Se ocorrer um erro ao ler ou escrever.
 	@throws ClassNotFoundException Se a classe não for encontrada.

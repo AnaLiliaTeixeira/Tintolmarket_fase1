@@ -6,6 +6,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+
+	Classe principal do cliente Tintolmarket.
+	Esta classe é responsável por estabelecer a conexão com o servidor, autenticar o utilizador e
+	permitir a interação com o servidor através de comandos de texto.
+ */
 public class Tintolmarket {
 
 	private static Socket socket;
@@ -49,6 +55,15 @@ public class Tintolmarket {
 
 	}
 
+/**
+
+	Método que permite ao utilizador interagir com o servidor através de comandos de texto.
+	Os comandos são lidos da entrada padrão e enviados ao servidor para serem processados.
+	As respostas do servidor são apresentadas na saída padrão.
+	@param in  ObjectInputStream para ler dados do servidor.
+	@param out ObjectOutputStream para enviar dados para o servidor.
+	@throws Exception Se ocorrer algum erro durante a interação com o servidor.
+*/
 	private static void interact(ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		System.out.println(
 				"Comandos disponiveis: \n\tadd <wine> <image> - adiciona um novo vinho identificado por wine, associado a imagem\r\n"

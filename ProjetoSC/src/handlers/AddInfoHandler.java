@@ -13,7 +13,7 @@ import exceptions.WineNotFoundException;
 
 /**
 
-	A classe AddInfoHandler é responsável por lidar com as operações de adição e classificação de vinhos e troca de mensagens entre usuários.
+	A classe AddInfoHandler é responsável por lidar com as operações de adição e classificação de vinhos e troca de mensagens entre utilizadors.
 */
 public class AddInfoHandler {
 
@@ -30,8 +30,8 @@ public class AddInfoHandler {
 
 /**
 
-	Classifica um vinho com base na pontuação fornecida por um usuário.
-	@param user O usuário que classifica o vinho.
+	Classifica um vinho com base na pontuação fornecida por um utilizador.
+	@param user O utilizador que classifica o vinho.
 	@param wine O nome do vinho a ser classificado.
 	@param stars A pontuação atribuída ao vinho (1 a 5 estrelas).
 	@throws WineNotFoundException Se o vinho não for encontrado no catálogo.
@@ -47,12 +47,12 @@ public class AddInfoHandler {
 
 /**
 
-	Adiciona uma mensagem enviada por um usuário a outro usuário.
-	@param sender O usuário que envia a mensagem.
-	@param recipient O nome do usuário destinatário da mensagem.
+	Adiciona uma mensagem enviada por um utilizador a outro utilizador.
+	@param sender O utilizador que envia a mensagem.
+	@param recipient O nome do utilizador destinatário da mensagem.
 	@param message O conteúdo da mensagem.
 	@throws IOException Se ocorrer um erro de entrada/saída.
-	@throws UserNotFoundException Se o usuário destinatário não for encontrado.
+	@throws UserNotFoundException Se o utilizador destinatário não for encontrado.
 */
 	public static void talk(User sender, String recipient, String message) throws IOException, UserNotFoundException {
 		User destinatary = UserCatalog.getInstance().getUserByName(recipient);
