@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class MainClient {
+public class Tintolmarket {
 
 	private static Socket socket;
 
@@ -29,9 +29,14 @@ public class MainClient {
 			// enviar user e password
 			out.writeObject(args[1]);
 			out.writeObject(args[2]);
+			if ((boolean) in.readObject()) {
+				System.out.println("Autenticacao bem sucedida!");
+				// interagir com o server
+				interact(in, out);
+			}
+			else
+				System.out.println("Ocorreu um erro na autenticacao.");
 
-			// interagir com o server
-			interact(in, out);
 
 			// fechar ligacoes
 			in.close();
