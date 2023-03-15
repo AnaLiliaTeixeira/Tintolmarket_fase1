@@ -18,9 +18,7 @@ public class TransactionHandler {
 	public static void sell(User user, String name, double price, int quantity) throws WineNotFoundException {
 		Wine w = WineCatalog.getInstance().getWineByName(name);
 		if (w != null) 
-			//WineAd wad = 
 			user.createWineAd(w, price, quantity);
-			//wad.adjustQuantityAndPrice(quantity, price);
 		else
 			throw new WineNotFoundException("O vinho nao existe");
 	}
