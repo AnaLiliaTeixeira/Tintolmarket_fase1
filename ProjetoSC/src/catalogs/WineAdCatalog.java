@@ -93,6 +93,6 @@ public class WineAdCatalog {
 	public void remove(WineAd wineAd) {
 		wineAds.remove(wineAd);
 		File wineAdInfo = new File("storedFiles\\wineAdsCatalog.txt");
-		Utils.replaceLine(wineAdInfo, wineAd.toString(), "");
+		Utils.replaceLine(wineAdInfo, wineAd.toString(), null);
 	}
 }
