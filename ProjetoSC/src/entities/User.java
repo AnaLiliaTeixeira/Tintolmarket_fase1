@@ -57,21 +57,17 @@ public class User {
 		return inbox;
 	}
 
-	public WineAd createWineAd(Wine wine, double price, int quantity) {
+	public void createWineAd(Wine wine, double price, int quantity) {
 		WineAdCatalog wineAds = WineAdCatalog.getInstance();
-		WineAd wa = new WineAd(this, wine, price, quantity);
+		WineAd newWineAd = new WineAd(this, wine, price, quantity);
 		for (WineAd wad : wineAds.getWineAdsByUser(this)) {
-			if (wad.equals(wa)) {
-				wa.setQuantity(wad.getQuantity()+quantity);
-				String oldLine = wad.toString();
-				String newLine = wa.toString();
-				Utils.replaceLine(new File("storedFiles\\wineAdsCatalog.txt"), oldLine, newLine);
-				wineAds.remove(wa);
+			if (wad.equals(newWineAd)) {
+				newWineAd.setQuantity(wad.getQuantity()+quantity);
+				wineAds.remove(wad);
 				break;
 			}
 		}
-		wineAds.add(wa);
-		return wa;
+		wineAds.add(newWineAd);
 	}
 
 	public String inboxToString() {
