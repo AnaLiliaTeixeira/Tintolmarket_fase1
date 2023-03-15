@@ -33,6 +33,11 @@ public class UserCatalog {
 		}
 	}
 
+	/**
+	 * Retorna uma instancia do catalogo de utilizadores.
+	 * 
+	 * @return uma instancia do catalogo de utilizadores.
+	 */
 	public static UserCatalog getInstance() {
 		if (instance == null) {
 			instance = new UserCatalog();
@@ -41,7 +46,7 @@ public class UserCatalog {
 	}
 
 	/**
-	 * Faz login do utilizador ou cria um utilizador novo
+	 * Faz login do utilizador ou cria um utilizador novo.
 	 * 
 	 * @return o username se login com sucesso ou null, caso contrario
 	 * @throws IOException 
@@ -63,12 +68,13 @@ public class UserCatalog {
 		boolean newUser = true;
 		String line;
 		while (sc.hasNextLine()) {
-			if ((line = sc.nextLine()).startsWith(user) && line.endsWith(password)) { // se for a pass certa
+			line = sc.nextLine();
+			if (line.startsWith(user) && line.endsWith(password)) { // se for a pass certa
 				newUser = false;
 				break;
 			} else if (line.startsWith(user)) { // se for a pass errada
 				sc.close();
-				throw new WrongCredentialsException("Nao e possivel iniciar sessão. Verifique as suas credenciais.");
+				throw new WrongCredentialsException("Credenciais incorretas.");
 			}
 		}
 		sc.close();
