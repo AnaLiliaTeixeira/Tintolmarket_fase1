@@ -9,7 +9,6 @@ import java.net.Socket;
 
 import catalogs.UserCatalog;
 import entities.User;
-import exceptions.WrongCredentialsException;
 import handlers.AddInfoHandler;
 import handlers.ShowInfoHandler;
 import handlers.TransactionHandler;
