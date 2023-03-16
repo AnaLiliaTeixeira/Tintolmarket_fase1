@@ -14,41 +14,42 @@ import exceptions.UserNotFoundException;
 import exceptions.WineNotFoundException;
 
 /**
-
-	A classe TransactionHandler é responsável por tratar das operações de compra e venda de vinhos entre utilizadores.
-*/
+ * A classe TransactionHandler e responsavel por tratar das operacoes de compra
+ * e venda de vinhos entre utilizadores.
+ */
 public class TransactionHandler {
 
-/**
-
-	Cria um novo anúncio de vinho para venda.
-	@param user O utilizador que deseja vender o vinho.
-	@param name O nome do vinho a ser vendido.
-	@param price O preço unitário do vinho.
-	@param quantity A quantidade disponível para venda.
-	@throws WineNotFoundException Se o vinho não for encontrado.
-*/
+	/**
+	 * Cria um novo anuncio de vinho para venda.
+	 * 
+	 * @param user     O utilizador que deseja vender o vinho.
+	 * @param name     O nome do vinho a ser vendido.
+	 * @param price    O preco unitario do vinho.
+	 * @param quantity A quantidade disponivel para venda.
+	 * @throws WineNotFoundException Se o vinho nao for encontrado.
+	 */
 	public static void sell(User user, String name, double price, int quantity) throws WineNotFoundException {
 		Wine w = WineCatalog.getInstance().getWineByName(name);
-		if (w != null) 
+		if (w != null)
 			user.createWineAd(w, price, quantity);
 		else
 			throw new WineNotFoundException("O vinho nao existe");
 	}
 
-/**
-
-	Realiza a compra de um vinho de um vendedor.
-	@param buyer O utilizador que deseja comprar o vinho.
-	@param wineName O nome do vinho a ser comprado.
-	@param seller O nome do utilizador vendedor.
-	@param quantity A quantidade desejada para compra.
-	@throws NotEnoughStockException Se não houver stock suficiente.
-	@throws UserNotFoundException Se o utilizador não for encontrado.
-	@throws WineNotFoundException Se o vinho não for encontrado.
-	@throws NotEnoughBalanceException Se não houver saldo suficiente.
-*/	
-	public static void buy(User buyer, String wineName, String seller, int quantity) throws NotEnoughStockException, UserNotFoundException, WineNotFoundException, NotEnoughBalanceException {
+	/**
+	 * Realiza a compra de um vinho de um vendedor.
+	 * 
+	 * @param buyer    O utilizador que deseja comprar o vinho.
+	 * @param wineName O nome do vinho a ser comprado.
+	 * @param seller   O nome do utilizador vendedor.
+	 * @param quantity A quantidade desejada para compra.
+	 * @throws NotEnoughStockException   Se nao houver stock suficiente.
+	 * @throws UserNotFoundException     Se o utilizador nao for encontrado.
+	 * @throws WineNotFoundException     Se o vinho nao for encontrado.
+	 * @throws NotEnoughBalanceException Se nao tiver saldo suficiente.
+	 */
+	public static void buy(User buyer, String wineName, String seller, int quantity)
+			throws NotEnoughStockException, UserNotFoundException, WineNotFoundException, NotEnoughBalanceException {
 		double balance = buyer.getBalance();
 
 		User sellerUser = UserCatalog.getInstance().getUserByName(seller);

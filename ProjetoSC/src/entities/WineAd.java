@@ -6,9 +6,10 @@ import java.util.Objects;
 import utils.Utils;
 
 /**
-
-A classe WineAd representa um anúncio de vinho no sistema. Cada anúncio contém informações sobre o utilizador que o criou, o vinho anunciado, o preço e a quantidade disponível.
-*/
+ * A classe WineAd representa um anuncio de vinho no sistema. Cada anuncio
+ * contem informacoes sobre o utilizador que o criou, o vinho anunciado, o preco
+ * e a quantidade disponivel.
+ */
 public class WineAd {
 
 	private User user;
@@ -16,14 +17,14 @@ public class WineAd {
 	private double price;
 	private int quantity;
 
-/**
-
-	Construtor da classe WineAd.
-	@param user O utilizador que criou o anúncio.
-	@param wine O vinho anunciado.
-	@param price O preço do vinho.
-	@param quantity A quantidade disponível.
-*/
+	/**
+	 * Construtor da classe WineAd.
+	 * 
+	 * @param user     O utilizador que criou o anuncio.
+	 * @param wine     O vinho anunciado.
+	 * @param price    O preco do vinho.
+	 * @param quantity A quantidade disponivel.
+	 */
 	public WineAd(User user, Wine wine, double price, int quantity) {
 		this.user = user;
 		this.wine = wine;
@@ -31,39 +32,39 @@ public class WineAd {
 		this.quantity = quantity;
 	}
 
-/**
-
-	Obtém o utilizador que criou o anúncio.
-	@return O utilizador que criou o anúncio.
-*/
+	/**
+	 * Obtem o utilizador que criou o anuncio.
+	 * 
+	 * @return O utilizador que criou o anuncio.
+	 */
 	public User getUser() {
 		return user;
 	}
 
-/**
-
-	Obtém o vinho anunciado.
-	@return O vinho anunciado.
-*/
+	/**
+	 * Obtem o vinho anunciado.
+	 * 
+	 * @return O vinho anunciado.
+	 */
 	public Wine getWine() {
 		return wine;
 	}
 
-/**
-
-	Obtém a quantidade disponível do vinho no anúncio.
-	@return A quantidade disponível.
-*/
+	/**
+	 * Obtem a quantidade disponivel do vinho no anuncio.
+	 * 
+	 * @return A quantidade disponivel.
+	 */
 	public int getQuantity() {
 		return quantity;
 	}
 
-/**
-
-	Ajusta a quantidade e o preço do anúncio.
-	@param quantity A nova quantidade.
-	@param price O novo preço.
-*/
+	/**
+	 * Ajusta a quantidade e o preco do anuncio.
+	 * 
+	 * @param quantity A nova quantidade.
+	 * @param price    O novo preco.
+	 */
 	public void adjustQuantityAndPrice(int quantity, double price) {
 		String oldLine = this.toString();
 		this.quantity += quantity;
@@ -72,24 +73,24 @@ public class WineAd {
 		Utils.replaceLine(new File("wineAdsCatalog.txt"), oldLine, newLine);
 	}
 
-/**
-
-	Obtem o preco do vinho no anuncio.
-	@return O preco do vinho.
-*/
+	/**
+	 * Obtem o preco do vinho no anuncio.
+	 * 
+	 * @return O preco do vinho.
+	 */
 	public double getPrice() {
 		return price;
 	}
 
-/**
-
-	Ajusta a quantidade do anuncio.
-	@param i A nova quantidade.
-*/
+	/**
+	 * Ajusta a quantidade do anuncio.
+	 * 
+	 * @param i A nova quantidade.
+	 */
 	public void setQuantity(int i) {
-		this.quantity=i;
+		this.quantity = i;
 	}
-	
+
 	@Override
 	public String toString() {
 		return user.getName() + " " + this.wine.getName() + " " + this.price + " " + this.quantity;

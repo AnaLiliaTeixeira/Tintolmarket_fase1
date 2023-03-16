@@ -15,8 +15,7 @@ import handlers.ShowInfoHandler;
 import handlers.TransactionHandler;
 
 /**
-
-	Classe principal do servidor Tintolmarket.
+ * Classe principal do servidor Tintolmarket.
  */
 public class TintolmarketServer {
 
@@ -24,7 +23,7 @@ public class TintolmarketServer {
 
 		ServerSocket serverSocket = null;
 
-		 // criar socket
+		// criar socket
 		try {
 			if (args.length != 0)
 				serverSocket = new ServerSocket(Integer.parseInt(args[0]));
@@ -33,7 +32,6 @@ public class TintolmarketServer {
 		} catch (IOException e1) {
 			System.err.println("Erro na conexao com cliente");
 		}
-
 
 		try { // handler de cada cliente
 			while (true) {
@@ -55,9 +53,10 @@ public class TintolmarketServer {
 }
 
 /**
-
-	Classe ServerThread que representa uma thread para comunicação com os clientes.
-*/
+ * 
+ * Classe ServerThread que representa uma thread para comunicação com os
+ * clientes.
+ */
 class ServerThread extends Thread {
 
 	private Socket socket;
@@ -67,7 +66,7 @@ class ServerThread extends Thread {
 	}
 
 	public void run() {
-	
+
 		ObjectOutputStream out = null;
 		ObjectInputStream in = null;
 
@@ -105,17 +104,17 @@ class ServerThread extends Thread {
 		}
 	}
 
-/**
-	Método para interagir com o usuário após a autenticação bem sucedida.
- 
-    @param user instância do usuário logado
-    @param in   ObjectInputStream para receber informações do cliente
-    @param out  ObjectOutputStream para enviar informações ao cliente
-    @throws Exception em caso de erro na comunicação com o cliente
-*/
+	/**
+	 * Metodo para interagir com o usuario apos a autenticacao bem sucedida.
+	 * 
+	 * @param user instancia do usuario logado
+	 * @param in   ObjectInputStream para receber informacoes do cliente
+	 * @param out  ObjectOutputStream para enviar informacoes ao cliente
+	 * @throws Exception em caso de erro na comunicacao com o cliente
+	 */
 	private void interact(User user, ObjectInputStream in, ObjectOutputStream out) throws Exception {
 		boolean exit = false;
-		while (!exit) {	
+		while (!exit) {
 			String command = (String) in.readObject();
 			String arg1 = null;
 			String arg2 = null;
@@ -133,7 +132,9 @@ class ServerThread extends Thread {
 					double price = Double.parseDouble((String) in.readObject());
 					num = Integer.parseInt((String) in.readObject());
 					TransactionHandler.sell(user, arg1, price, num);
-					out.writeObject(String.format("%d quantidade(s) de vinho %s colocada(s) a venda por %.2f com sucesso!", num, arg1, price));
+					out.writeObject(
+							String.format("%d quantidade(s) de vinho %s colocada(s) a venda por %.2f com sucesso!", num,
+									arg1, price));
 					break;
 				case "v":
 					arg1 = (String) in.readObject();

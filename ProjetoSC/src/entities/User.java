@@ -11,11 +11,12 @@ import catalogs.WineAdCatalog;
 import utils.Utils;
 
 /**
-
-	A classe User representa um utilizador no sistema. Cada utilizador tem um nome, saldo e caixa de mensagens (inbox).
-	
-	Os utilizadores podem criar anúncios de vinhos, ajustar o saldo, adicionar mensagens à caixa de mensagens e apagar todas as mensagens.
-*/
+ * A classe User representa um utilizador no sistema. Cada utilizador tem um
+ * nome, saldo e caixa de mensagens (inbox).
+ * 
+ * Os utilizadores podem criar anúncios de vinhos, ajustar o saldo, adicionar
+ * mensagens a caixa de mensagens e apagar todas as mensagens.
+ */
 
 public class User {
 
@@ -23,52 +24,53 @@ public class User {
 	private double balance;
 	private HashMap<String, List<String>> inbox;
 
-/**
-
-	Construtor da classe User.
-	@param name O nome do utilizador.
-	@param balance O saldo do utilizador.
-	@param inbox A caixa de mensagens do utilizador.
-	@throws IOException Lança exceção caso ocorra um erro de leitura/escrita.
-*/
+	/**
+	 * Construtor da classe User.
+	 * 
+	 * @param name    O nome do utilizador.
+	 * @param balance O saldo do utilizador.
+	 * @param inbox   A caixa de mensagens do utilizador.
+	 * @throws IOException Lanca excecao caso ocorra um erro de leitura/escrita.
+	 */
 	public User(String name, double balance, HashMap<String, List<String>> inbox) throws IOException {
 		this.name = name;
 		this.balance = balance;
 		this.inbox = inbox;
 	}
 
-/**
-
-	Obtém o nome do utilizador.
-	@return O nome do utilizador.
-*/
+	/**
+	 * 
+	 * Obtém o nome do utilizador.
+	 * 
+	 * @return O nome do utilizador.
+	 */
 	public String getName() {
 		return name;
 	}
 
-/**
-
-	Define o nome do utilizador.
-	@param name O nome a ser definido.
-*/
+	/**
+	 * Define o nome do utilizador.
+	 * 
+	 * @param name O nome a ser definido.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-/**
-
-	Obtém o saldo do utilizador.
-	@return O saldo do utilizador.
-*/
+	/**
+	 * Obtem o saldo do utilizador.
+	 * 
+	 * @return O saldo do utilizador.
+	 */
 	public double getBalance() {
 		return this.balance;
 	}
 
-/**
-
-	Ajusta o saldo do utilizador.
-	@param value O valor a ser ajustado.
-*/
+	/**
+	 * Ajusta o saldo do utilizador.
+	 * 
+	 * @param value O valor a ser ajustado.
+	 */
 	public void adjustBalance(double value) {
 		String oldLine = this.toString();
 		this.balance += value;
@@ -76,28 +78,28 @@ public class User {
 		Utils.replaceLine(new File("userCatalog.txt"), oldLine, newLine);
 	}
 
-/**
-
-	Obtém a caixa de mensagens do utilizador.
-	@return A caixa de mensagens do utilizador.
-*/
+	/**
+	 * Obtem a caixa de mensagens do utilizador.
+	 * 
+	 * @return A caixa de mensagens do utilizador.
+	 */
 	public HashMap<String, List<String>> getInbox() {
 		return inbox;
 	}
 
-/**
-
-	Cria um anúncio de vinho.
-	@param wine O vinho a ser anunciado.
-	@param price O preço do vinho.
-	@param quantity A quantidade disponível.
-*/
+	/**
+	 * Cria um anuncio de vinho.
+	 * 
+	 * @param wine     O vinho a ser anunciado.
+	 * @param price    O preco do vinho.
+	 * @param quantity A quantidade disponivel.
+	 */
 	public void createWineAd(Wine wine, double price, int quantity) {
 		WineAdCatalog wineAds = WineAdCatalog.getInstance();
 		WineAd newWineAd = new WineAd(this, wine, price, quantity);
 		for (WineAd wad : wineAds.getWineAdsByUser(this)) {
 			if (wad.equals(newWineAd)) {
-				newWineAd.setQuantity(wad.getQuantity()+quantity);
+				newWineAd.setQuantity(wad.getQuantity() + quantity);
 				wineAds.remove(wad);
 				break;
 			}
@@ -105,11 +107,11 @@ public class User {
 		wineAds.add(newWineAd);
 	}
 
-/**
-
-	Converte a caixa de mensagens para uma string.
-	@return A representação em string da caixa de mensagens.
-*/
+	/**
+	 * Converte a caixa de mensagens para uma string.
+	 * 
+	 * @return A representacao em string da caixa de mensagens.
+	 */
 	public String inboxToString() {
 		StringBuilder sb = new StringBuilder();
 		for (String key : inbox.keySet()) {
@@ -118,10 +120,9 @@ public class User {
 		return sb.toString();
 	}
 
-/**
-
-	Apaga todas as mensagens da caixa de mensagens do utilizador.
-*/
+	/**
+	 * Apaga todas as mensagens da caixa de mensagens do utilizador.
+	 */
 	public void deleteMessages() {
 		String oldLine = this.toString();
 		this.inbox.clear();
@@ -129,12 +130,13 @@ public class User {
 		Utils.replaceLine(new File("userCatalog.txt"), oldLine, newLine);
 	}
 
-/**
-
-	Coloca na caixa de mensagens do utilizador a mensagem enviada por outro cliente do servico
-	@param sender O utilizador que envia a mensagem.
-	@param message A mensagem a ser enviada.
-*/
+	/**
+	 * Coloca na caixa de mensagens do utilizador a mensagem enviada por outro
+	 * cliente do servico
+	 * 
+	 * @param sender  O utilizador que envia a mensagem.
+	 * @param message A mensagem a ser enviada.
+	 */
 	public void addMessage(User sender, String message) {
 		String oldLine = this.toString();
 		List<String> senderMessages = this.inbox.getOrDefault(sender.getName(), new ArrayList<>());
