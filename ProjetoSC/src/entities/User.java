@@ -104,7 +104,7 @@ public class User {
 				break;
 			}
 		}
-		wineAds.add(newWineAd);
+		wineAds.addWineAd(newWineAd);
 	}
 
 	/**
