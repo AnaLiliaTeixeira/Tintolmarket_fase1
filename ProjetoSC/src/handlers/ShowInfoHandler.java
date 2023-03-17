@@ -15,14 +15,15 @@ public class ShowInfoHandler {
 	 * Exibe informacoes detalhadas sobre um vinho.
 	 * 
 	 * @param wineName O nome do vinho cujas informacoes devem ser exibidas.
-	 * @return Uma representacao em string das informacoes do vinho.
+	 * @return Um vetor de strings com as informacoes do vinho
 	 * @throws WineNotFoundException Se o vinho nao for encontrado no catalogo.
 	 */
-	public static String view(String wineName) throws WineNotFoundException {
+	public static String[] view(String wineName) throws WineNotFoundException {
 		Wine wine = WineCatalog.getInstance().getWineByName(wineName);
 		if (wine == null)
 			throw new WineNotFoundException("O vinho nao existe");
-		return wine.printWine();
+		String[] info = { wine.printWine(), wine.getImage().getAbsolutePath() };
+		return info;
 	}
 
 	/**
