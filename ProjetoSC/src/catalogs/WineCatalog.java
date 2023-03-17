@@ -98,7 +98,7 @@ public class WineCatalog {
 	 * @param image    O arquivo de imagem do novo vinho.
 	 * @throws RepeatedWineException Se ja existir um vinho com o mesmo nome.
 	 */
-	public void createWine(String wineName, File image) throws RepeatedWineException {
+	public synchronized void createWine(String wineName, File image) throws RepeatedWineException {
 		if (getWineByName(wineName) != null) {
 			throw new RepeatedWineException("Ja existe um vinho com o mesmo nome.");
 		}
