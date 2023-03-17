@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class Utils {
 
 	/**
-	 * 
 	 * Substitui uma linha especifica em um arquivo por outra. Se a nova linha for
 	 * nula, a linha antiga sera removida.
 	 * 
@@ -20,7 +19,7 @@ public class Utils {
 	 * @param newLine A nova linha que substituira a antiga. Se for null, a linha
 	 *                antiga sera removida.
 	 */
-	public static void replaceLine(File file, String oldLine, String newLine) {
+	public static synchronized void replaceLine(File file, String oldLine, String newLine) {
 		try {
 			File newFile = new File("temp.txt");
 			newFile.createNewFile();
