@@ -1,6 +1,8 @@
 package application;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -123,7 +125,23 @@ class ServerThread extends Thread {
 				switch (command) {
 				case "a":
 					arg1 = (String) in.readObject();
-					File image = (File) in.readObject();
+					long fileSize = (long) in.readObject(); // ler tamanho da imagem
+					int bytesRead;
+					long totalBytesRead = 0;
+					File image = new File((String) in.readObject()); // ler nome da imagem
+					FileOutputStream file = new FileOutputStream(image);
+					byte[] bytes = new byte[16 * 1024];
+
+					while (totalBytesRead < fileSize) {
+						bytesRead = in.read(bytes);
+						file.write(bytes, 0, bytesRead);
+						totalBytesRead += bytesRead;
+					}
+					file.close();
+
+					while (in.available() > 0) // limpar stream depois de transferir ficheiro
+						in.read(bytes);
+
 					AddInfoHandler.add(arg1, image);
 					out.writeObject(String.format("Vinho %s adicionado com sucesso!", arg1));
 					break;
@@ -138,7 +156,16 @@ class ServerThread extends Thread {
 					break;
 				case "v":
 					arg1 = (String) in.readObject();
-					out.writeObject(ShowInfoHandler.view(arg1));
+					String[] result = ShowInfoHandler.view(arg1);
+					out.writeObject(result[0]);
+					File img = new File(result[1]);
+					FileInputStream imgStream = new FileInputStream(img);
+					out.writeObject(imgStream.getChannel().size()); // enviar tamanho
+					out.writeObject(img.getName()); // enviar nome
+					byte[] buffer = new byte[16 * 1024];
+					while (imgStream.read(buffer) > 0)
+						out.write(buffer);
+					imgStream.close();
 					break;
 				case "b":
 					arg1 = (String) in.readObject();

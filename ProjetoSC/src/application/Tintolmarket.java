@@ -1,6 +1,8 @@
 package application;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,6 +18,7 @@ import java.util.Scanner;
 public class Tintolmarket {
 
 	private static Socket socket;
+	private static String name;
 
 	public static void main(String[] args) {
 
@@ -34,6 +37,7 @@ public class Tintolmarket {
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
 			// enviar user e password
+			name = args[1];
 			out.writeObject(args[1]);
 			out.writeObject(args[2]);
 			if ((boolean) in.readObject()) {
@@ -85,14 +89,26 @@ public class Tintolmarket {
 			String line = sc.nextLine();
 			String[] tokens = line.split(" ");
 			boolean wait = false;
+			boolean image = false;
 			if (tokens[0].equals("a") || tokens[0].equals("add")) {
 				if (tokens.length != 3)
 					System.out.println("O comando add e usado na forma \"add <wine> <image>\"");
 				else {
-					out.writeObject("a");
-					out.writeObject(tokens[1]);
-					out.writeObject(new File(tokens[2]));
-					wait = true;
+					File img = new File(tokens[2]);
+					if (img.exists()) {
+						out.writeObject("a");
+						out.writeObject(tokens[1]);
+						FileInputStream file = new FileInputStream(img);
+						out.writeObject(file.getChannel().size()); // enviar tamanho
+						out.writeObject(img.getName()); // enviar nome
+						byte[] bytes = new byte[16 * 1024];
+						while (file.read(bytes) > 0)
+							out.write(bytes);
+						wait = true;
+						file.close();
+					} else {
+						System.out.println("A imagem " + tokens[2] + " nao existe!");
+					}
 				}
 			} else if (tokens[0].equals("s") || tokens[0].equals("sell")) {
 				if (tokens.length != 4)
@@ -111,6 +127,7 @@ public class Tintolmarket {
 					out.writeObject("v");
 					out.writeObject(tokens[1]);
 					wait = true;
+					image = true;
 				}
 			} else if (tokens[0].equals("b") || tokens[0].equals("buy")) {
 				if (tokens.length != 4)
@@ -182,6 +199,25 @@ public class Tintolmarket {
 
 			if (wait)
 				System.out.println((String) in.readObject());
+			if (image) {
+				long fileSize = (long) in.readObject(); // ler tamanho da imagem
+				int bytesRead;
+				long totalBytesRead = 0;
+				File dir = new File(name);
+				dir.mkdir();
+				File img = new File(name + "//" + (String) in.readObject());
+				img.createNewFile();
+				FileOutputStream file = new FileOutputStream(img);
+				byte[] bytes = new byte[16 * 1024];
+				while (totalBytesRead < fileSize) {
+					bytesRead = in.read(bytes);
+					file.write(bytes, 0, bytesRead);
+					totalBytesRead += bytesRead;
+				}
+				file.close();
+				while (in.available() > 0) // limpar stream depois de transferir ficheiro
+					in.read(bytes);
+			}
 		}
 		sc.close();
 	}
