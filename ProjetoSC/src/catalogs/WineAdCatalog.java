@@ -113,7 +113,7 @@ public class WineAdCatalog {
 	 * 
 	 * @param wineAd O anuncio de vinho a ser adicionado.
 	 */
-	public void add(WineAd wineAd) {
+	public synchronized void addWineAd(WineAd wineAd) {
 		try {
 			File wineAdInfo = new File("wineAdsCatalog.txt");
 			FileWriter fw = new FileWriter(wineAdInfo, true);
