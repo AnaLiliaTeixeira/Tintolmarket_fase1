@@ -63,15 +63,6 @@ public class Wine {
 	}
 
 	/**
-	 * Define a imagem do vinho.
-	 * 
-	 * @param image A imagem a ser definida.
-	 */
-	public void setImage(File image) {
-		this.image = image;
-	}
-
-	/**
 	 * Obtem os anuncios atuais do vinho.
 	 * 
 	 * @return A lista de anuncios atuais do vinho.
@@ -112,7 +103,7 @@ public class Wine {
 	 */
 	public String printWine() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Nome do Vinho: " + name + " - " + image.getName() + "\n");
+		sb.append("Nome do Vinho: " + name + " - " + this.image.getName() + "\n");
 		double avg = 0.0;
 		for (int i : classifications.values()) {
 			avg += i;
