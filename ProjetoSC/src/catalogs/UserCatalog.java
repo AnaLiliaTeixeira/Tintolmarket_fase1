@@ -63,7 +63,7 @@ public class UserCatalog {
 	 * @throws ClassNotFoundException    Se a classe nao for encontrada.
 	 * @throws WrongCredentialsException Se as credenciais estiverem incorretas.
 	 */
-	public String login(ObjectInputStream in, ObjectOutputStream out)
+	public synchronized String login(ObjectInputStream in, ObjectOutputStream out)
 			throws ClassNotFoundException, IOException, WrongCredentialsException {
 
 		File users = new File("userCreds.txt");
@@ -136,7 +136,7 @@ public class UserCatalog {
 	 * 
 	 * @param userName O nome do novo utilizador.
 	 */
-	public void addUser(String userName) {
+	public synchronized void addUser(String userName) {
 		try {
 			User u = new User(userName, 200, new HashMap<>());
 			this.users.add(u);
