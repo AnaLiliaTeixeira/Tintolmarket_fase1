@@ -1,10 +1,10 @@
 package catalogs;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -66,7 +66,7 @@ public class UserCatalog {
 	 * @throws ClassNotFoundException    Se a classe nao for encontrada.
 	 * @throws WrongCredentialsException Se as credenciais estiverem incorretas.
 	 */
-	public synchronized String login(ObjectInputStream in, ObjectOutputStream out)
+	public synchronized String login(DataInputStream in, DataOutputStream out)
 			throws ClassNotFoundException, IOException, WrongCredentialsException {
 
 		File users = new File("txtFiles//userCreds.txt");
@@ -74,8 +74,8 @@ public class UserCatalog {
 		Scanner sc = new Scanner(users);
 
 		// le user e pass da socket
-		String user = (String) in.readObject();
-		String password = (String) in.readObject();
+		String user = in.readUTF();
+		String password = (String) in.readUTF();
 
 		// verifica se user existe e pass esta correta
 		boolean newUser = true;

@@ -1,10 +1,10 @@
 package application;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -33,14 +33,14 @@ public class Tintolmarket {
 				socket = new Socket(serverInfo[0], 12345);
 
 			// iniciar streams
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+			DataInputStream in = new DataInputStream(socket.getInputStream());
+			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
 			// enviar user e password
 			name = args[1];
-			out.writeObject(args[1]);
-			out.writeObject(args[2]);
-			if ((boolean) in.readObject()) {
+			out.writeUTF(args[1]);
+			out.writeUTF(args[2]);
+			if (in.readBoolean()) {
 				System.out.println("Autenticacao bem sucedida!");
 				// interagir com o server
 				interact(in, out);
@@ -67,7 +67,7 @@ public class Tintolmarket {
 	 * @param out ObjectOutputStream para enviar dados para o servidor.
 	 * @throws Exception Se ocorrer algum erro durante a interaçao com o servidor.
 	 */
-	private static void interact(ObjectInputStream in, ObjectOutputStream out) throws Exception {
+	private static void interact(DataInputStream in, DataOutputStream out) throws Exception {
 		System.out.println(
 				"Comandos disponiveis: \n\tadd <wine> <image> - adiciona um novo vinho identificado por wine, associado a imagem\r\n"
 						+ "image.\n"
@@ -84,11 +84,11 @@ public class Tintolmarket {
 						+ "\tread - permite ler as novas mensagens recebidas.");
 
 		Scanner sc = new Scanner(System.in);
-		while (true) {
+		boolean exit = false;
+		while (!exit) {
 			System.out.print("\nInsira um comando: ");
 			String line = sc.nextLine();
 			String[] tokens = line.split(" ");
-			boolean wait = false;
 			boolean image = false;
 			if (tokens[0].equals("a") || tokens[0].equals("add")) {
 				if (tokens.length != 3)
@@ -96,15 +96,14 @@ public class Tintolmarket {
 				else {
 					File img = new File(tokens[2]);
 					if (img.exists()) {
-						out.writeObject("a");
-						out.writeObject(tokens[1]);
+						out.writeUTF("a");
+						out.writeUTF(tokens[1]);
 						FileInputStream file = new FileInputStream(img);
-						out.writeObject(file.getChannel().size()); // enviar tamanho
-						out.writeObject(img.getName()); // enviar nome
+						out.writeLong(file.getChannel().size()); // enviar tamanho
+						out.writeUTF(img.getName()); // enviar nome
 						byte[] bytes = new byte[16 * 1024];
 						while (file.read(bytes) > 0)
 							out.write(bytes);
-						wait = true;
 						file.close();
 					} else {
 						System.out.println("A imagem " + tokens[2] + " nao existe!");
@@ -114,46 +113,41 @@ public class Tintolmarket {
 				if (tokens.length != 4)
 					System.out.println("O comando sell e usado na forma \"sell <wine> <value> <quantity>\"");
 				else {
-					out.writeObject("s");
-					out.writeObject(tokens[1]);
-					out.writeObject(tokens[2]);
-					out.writeObject(tokens[3]);
-					wait = true;
+					out.writeUTF("s");
+					out.writeUTF(tokens[1]);
+					out.writeUTF(tokens[2]);
+					out.writeUTF(tokens[3]);
 				}
 			} else if (tokens[0].equals("v") || tokens[0].equals("view")) {
 				if (tokens.length != 2)
 					System.out.println("O comando view e usado na forma \"view <wine>\"");
 				else {
-					out.writeObject("v");
-					out.writeObject(tokens[1]);
-					wait = true;
+					out.writeUTF("v");
+					out.writeUTF(tokens[1]);
 					image = true;
 				}
 			} else if (tokens[0].equals("b") || tokens[0].equals("buy")) {
 				if (tokens.length != 4)
 					System.out.println("O comando buy e usado na forma \"buy <wine> <seller> <quantity>\"");
 				else {
-					out.writeObject("b");
-					out.writeObject(tokens[1]);
-					out.writeObject(tokens[2]);
-					out.writeObject(tokens[3]);
-					wait = true;
+					out.writeUTF("b");
+					out.writeUTF(tokens[1]);
+					out.writeUTF(tokens[2]);
+					out.writeUTF(tokens[3]);
 				}
 			} else if (tokens[0].equals("w") || tokens[0].equals("wallet")) {
 				if (tokens.length != 1)
 					System.out.println("O comando wallet e usado na forma \"wallet\"");
 				else {
-					out.writeObject("w");
-					wait = true;
+					out.writeUTF("w");
 				}
 			} else if (tokens[0].equals("c") || tokens[0].equals("classify")) {
 				if (tokens.length != 3)
 					System.out.println("O comando classify e usado na forma \"classify <wine> <stars>\"");
 				else {
-					out.writeObject("c");
-					out.writeObject(tokens[1]);
-					out.writeObject(tokens[2]);
-					wait = true;
+					out.writeUTF("c");
+					out.writeUTF(tokens[1]);
+					out.writeUTF(tokens[2]);
 				}
 			} else if (tokens[0].equals("t") || tokens[0].equals("talk")) {
 				if (tokens.length < 3)
@@ -163,22 +157,20 @@ public class Tintolmarket {
 					for (int i = 2; i < tokens.length; i++) {
 						sb.append(tokens[i] + " ");
 					}
-					out.writeObject("t");
-					out.writeObject(tokens[1]);
-					out.writeObject(sb.toString());
-					wait = true;
+					out.writeUTF("t");
+					out.writeUTF(tokens[1]);
+					out.writeUTF(sb.toString());
 				}
 			} else if (tokens[0].equals("r") || tokens[0].equals("read")) {
 				if (tokens.length != 1)
 					System.out.println("O comando read e usado na forma \"read \"");
 				else {
-					out.writeObject("r");
-					wait = true;
+					out.writeUTF("r");
 				}
 			} else if (tokens[0].equals("exit")) {
 				System.out.println("A encerrar programa...");
-				out.writeObject("exit");
-				break;
+				out.writeUTF("exit");
+				exit = true;
 			} else {
 				System.out.println("Comando nao reconhecido");
 				System.out.println(
@@ -197,16 +189,17 @@ public class Tintolmarket {
 								+ "\tread - permite ler as novas mensagens recebidas.");
 			}
 
-			if (wait)
-				System.out.println((String) in.readObject());
+			if (!exit) {
+				System.out.println(in.readUTF());
+			}
 			if (image) {
-				long fileSize = (long) in.readObject(); // ler tamanho da imagem
+				long fileSize = in.readLong(); // ler tamanho da imagem
 				int bytesRead;
 				long totalBytesRead = 0;
 				File dir = new File(name);
 				if (!dir.exists())
 					dir.mkdir();
-				File img = new File(name + "//" + (String) in.readObject());
+				File img = new File(name + "//" + in.readUTF());
 				img.createNewFile();
 				FileOutputStream file = new FileOutputStream(img);
 				byte[] bytes = new byte[16 * 1024];
