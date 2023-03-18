@@ -65,7 +65,9 @@ A aplicação cliente oferece várias operações que pode executar. Alguns exem
 
 # Limitações
 
-+ A é executada num terminal
++ Assume que o Servidor tem permissão para escrever no diretório tem permissão para escrever no diretório em que está a ser executado.  
+  
++ Não inclui qualquer mecanismo de autenticação ou criptografia na transferência de ficheiros.
 
 ***
 
@@ -79,4 +81,4 @@ João Matos 56292
 
 # Data
 
-17/03/2023
+18/03/2023
