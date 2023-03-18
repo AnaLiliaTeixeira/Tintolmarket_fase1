@@ -36,7 +36,7 @@ Após compilar o projeto, siga os passos abaixo para executar os programas.
 java TintolmarketServer <port>
 ````
 
-## Executar a aplicação a aplicação Cliente TintoImarket  
+## Executar a aplicação Cliente TintoImarket  
 
 1. Abra um novo terminal e navegue até a pasta onde se encontram os arquivos Java compilados.  
 2. Execute o seguinte comando para iniciar a aplicação cliente, substituindo <serverAddress>, <userID> e [password] pelos valores correspondentes:  
