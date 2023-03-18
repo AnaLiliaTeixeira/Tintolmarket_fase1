@@ -204,7 +204,8 @@ public class Tintolmarket {
 				int bytesRead;
 				long totalBytesRead = 0;
 				File dir = new File(name);
-				dir.mkdir();
+				if (!dir.exists())
+					dir.mkdir();
 				File img = new File(name + "//" + (String) in.readObject());
 				img.createNewFile();
 				FileOutputStream file = new FileOutputStream(img);

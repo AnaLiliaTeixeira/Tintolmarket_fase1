@@ -91,7 +91,7 @@ public class Wine {
 		String oldLine = this.toString();
 		this.classifications.put(user.getName(), stars);
 		String newLine = this.toString();
-		File wineInfo = new File("wineCatalog.txt");
+		File wineInfo = new File("txtFiles//wineCatalog.txt");
 		Utils.replaceLine(wineInfo, oldLine, newLine);
 	}
 

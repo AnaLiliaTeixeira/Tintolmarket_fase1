@@ -75,7 +75,7 @@ public class User {
 		String oldLine = this.toString();
 		this.balance += value;
 		String newLine = this.toString();
-		Utils.replaceLine(new File("userCatalog.txt"), oldLine, newLine);
+		Utils.replaceLine(new File("txtFiles//userCatalog.txt"), oldLine, newLine);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class User {
 		String oldLine = this.toString();
 		this.inbox.clear();
 		String newLine = this.toString();
-		Utils.replaceLine(new File("userCatalog.txt"), oldLine, newLine);
+		Utils.replaceLine(new File("txtFiles//userCatalog.txt"), oldLine, newLine);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class User {
 		senderMessages.add(message);
 		this.inbox.put(sender.getName(), senderMessages);
 		String newLine = this.toString();
-		Utils.replaceLine(new File("userCatalog.txt"), oldLine, newLine);
+		Utils.replaceLine(new File("txtFiles//userCatalog.txt"), oldLine, newLine);
 	}
 
 	@Override

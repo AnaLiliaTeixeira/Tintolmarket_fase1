@@ -29,8 +29,11 @@ public class UserCatalog {
 	 */
 	private UserCatalog() {
 		users = new ArrayList<>();
-		File userInfo = new File("userCatalog.txt");
+		File txtFolder = new File("txtFiles");
+		File userInfo = new File("txtFiles//userCatalog.txt");
 		try {
+			if (!txtFolder.exists())
+				txtFolder.mkdir();
 			if (!userInfo.exists())
 				userInfo.createNewFile();
 			else
@@ -66,7 +69,7 @@ public class UserCatalog {
 	public synchronized String login(ObjectInputStream in, ObjectOutputStream out)
 			throws ClassNotFoundException, IOException, WrongCredentialsException {
 
-		File users = new File("userCreds.txt");
+		File users = new File("txtFiles//userCreds.txt");
 		users.createNewFile();
 		Scanner sc = new Scanner(users);
 
@@ -92,7 +95,7 @@ public class UserCatalog {
 		// se o user nao existir faz o seu registo
 		if (newUser) {
 			this.addUser(user);
-			FileWriter fw = new FileWriter("userCreds.txt", true);
+			FileWriter fw = new FileWriter("txtFiles//userCreds.txt", true);
 			fw.write(user + ":" + password + "\n");
 			fw.close();
 		}
@@ -140,7 +143,7 @@ public class UserCatalog {
 		try {
 			User u = new User(userName, 200, new HashMap<>());
 			this.users.add(u);
-			File userInfo = new File("userCatalog.txt");
+			File userInfo = new File("txtFiles//userCatalog.txt");
 			FileWriter fw = new FileWriter(userInfo, true);
 			fw.write(u.toString() + "\r\n");
 			fw.close();

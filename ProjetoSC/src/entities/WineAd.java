@@ -70,7 +70,7 @@ public class WineAd {
 		this.quantity += quantity;
 		this.price = price;
 		String newLine = this.toString();
-		Utils.replaceLine(new File("wineAdsCatalog.txt"), oldLine, newLine);
+		Utils.replaceLine(new File("txtFiles//wineAdsCatalog.txt"), oldLine, newLine);
 	}
 
 	/**

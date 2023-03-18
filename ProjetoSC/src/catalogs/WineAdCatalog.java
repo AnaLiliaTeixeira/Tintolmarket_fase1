@@ -28,8 +28,11 @@ public class WineAdCatalog {
 	 */
 	private WineAdCatalog() {
 		wineAds = new ArrayList<>();
-		File wineAdsInfo = new File("wineAdsCatalog.txt");
+		File txtFolder = new File("txtFiles");
+		File wineAdsInfo = new File("txtFiles//wineAdsCatalog.txt");
 		try {
+			if (!txtFolder.exists())
+				txtFolder.mkdir();
 			if (!wineAdsInfo.exists())
 				wineAdsInfo.createNewFile();
 			else
@@ -115,7 +118,7 @@ public class WineAdCatalog {
 	 */
 	public synchronized void addWineAd(WineAd wineAd) {
 		try {
-			File wineAdInfo = new File("wineAdsCatalog.txt");
+			File wineAdInfo = new File("txtFiles//wineAdsCatalog.txt");
 			FileWriter fw = new FileWriter(wineAdInfo, true);
 			fw.write(wineAd.toString() + "\r\n");
 			this.wineAds.add(wineAd);
@@ -132,7 +135,7 @@ public class WineAdCatalog {
 	 */
 	public void remove(WineAd wineAd) {
 		wineAds.remove(wineAd);
-		File wineAdInfo = new File("wineAdsCatalog.txt");
+		File wineAdInfo = new File("txtFiles//wineAdsCatalog.txt");
 		Utils.replaceLine(wineAdInfo, wineAd.toString(), null);
 	}
 }

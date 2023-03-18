@@ -128,20 +128,20 @@ class ServerThread extends Thread {
 					long fileSize = (long) in.readObject(); // ler tamanho da imagem
 					int bytesRead;
 					long totalBytesRead = 0;
-					File image = new File((String) in.readObject()); // ler nome da imagem
+					File imgFiles = new File("imgFiles");
+					if (!imgFiles.exists())
+						imgFiles.mkdir();
+					File image = new File("imgFiles//" + (String) in.readObject()); // ler nome da imagem
 					FileOutputStream file = new FileOutputStream(image);
 					byte[] bytes = new byte[16 * 1024];
-
 					while (totalBytesRead < fileSize) {
 						bytesRead = in.read(bytes);
 						file.write(bytes, 0, bytesRead);
 						totalBytesRead += bytesRead;
 					}
-					file.close();
-
 					while (in.available() > 0) // limpar stream depois de transferir ficheiro
 						in.read(bytes);
-
+					file.close();
 					AddInfoHandler.add(arg1, image);
 					out.writeObject(String.format("Vinho %s adicionado com sucesso!", arg1));
 					break;
