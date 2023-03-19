@@ -1,7 +1,7 @@
 # Tintolmarket - Fase 1 - Compilar e Executar
 
 Este documento explica como compilar e executar o projeto Tintolmarket Fase 1. O projeto consiste em uma aplicação distribuída do tipo cliente-servidor para a compra e venda de vinhos, semelhante ao Vivino.  
-Nesta primeira fase do trabalho, as questões de segurança da informação não são consideradas, sendo apenas necessário concretizar as funcionalidades oferecidas pelo serviço.
+Nesta primeira fase do trabalho, as questões de segurança da informação não são consideradas.
 
 ***
 
@@ -30,7 +30,7 @@ Após compilar o projeto, siga os passos abaixo para executar os programas.
 ## Executar o Servidor TintoImarketServer  
 
 1. Abra um terminal e navegue até a pasta onde se encontram os arquivos Java compilados.  
-2. Execute o seguinte comando para iniciar o servidor, substituindo <port> pelo número da porta (p.e. , 12345):
+2. Execute o seguinte comando para iniciar o servidor, substituindo ````<port>```` pelo número da porta (p.e. , 12345):
 
 ````
 java TintolmarketServer <port>
@@ -39,7 +39,7 @@ java TintolmarketServer <port>
 ## Executar a aplicação Cliente TintoImarket  
 
 1. Abra um novo terminal e navegue até a pasta onde se encontram os arquivos Java compilados.  
-2. Execute o seguinte comando para iniciar a aplicação cliente, substituindo <serverAddress>, <userID> e [password] pelos valores correspondentes:  
+2. Execute o seguinte comando para iniciar a aplicação cliente, substituindo ````<serverAddress>````, ````<userID>```` e ````[password]```` pelos valores correspondentes:  
 
 ````
 java TintolmarketClient <serverAddress> <userID> [password]
@@ -56,7 +56,7 @@ A aplicação cliente oferece várias operações que pode executar. Alguns exem
 + `sell <wine> <value> <quantity>`: Colocar um vinho à venda com um preço e quantidade especificados.
 + `view <wine>`: Visualizar informações de um vinho específico, como imagem, classificação média e disponibilidade.
 + `buy <wine> <seller> <quantity>`: Comprar uma quantidade específica de um vinho de outro utilizador.
-+ `wallet`
++ `wallet` : Devolver o saldo atual da carteira
 + `classify <wine> <stars>`: Atribuir uma classificação de 1 a 5 a um vinho específico.
 + `talk <user> <message>`: Enviar uma mensagem privada a outro utilizador.
 + `read`: Ler as novas mensagens recebidas e apresentar a identificação do remetente e a respectiva mensagem.
@@ -65,7 +65,7 @@ A aplicação cliente oferece várias operações que pode executar. Alguns exem
 
 # Limitações
 
-+ Assume que o Servidor tem permissão para escrever no diretório tem permissão para escrever no diretório em que está a ser executado.  
++ Assume que o Servidor tem permissão para escrever no diretório em que está a ser executado.  
   
 + Não inclui qualquer mecanismo de autenticação ou criptografia na transferência de ficheiros.
 
@@ -81,4 +81,4 @@ João Matos 56292
 
 # Data
 
-18/03/2023
+19/03/2023
