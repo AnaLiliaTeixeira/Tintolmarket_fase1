@@ -32,7 +32,7 @@ public class TintolmarketServer {
 			else
 				serverSocket = new ServerSocket(12345);
 		} catch (IOException e1) {
-			System.err.println("Erro na conexao com cliente");
+			System.out.println("Erro na conexao com cliente");
 		}
 
 		try { // handler de cada cliente
@@ -42,7 +42,7 @@ public class TintolmarketServer {
 				st.start();
 			}
 		} catch (Exception e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 
 		try {
@@ -90,10 +90,10 @@ class ServerThread extends Thread {
 				System.out.println(e.getMessage());
 				out.writeBoolean(false);
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				System.out.println("Ocorreu um erro na comunicacao");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Cliente desconectado");
 		} finally {
 			try {
 				// fechar ligacoes
@@ -101,7 +101,7 @@ class ServerThread extends Thread {
 				out.close();
 				socket.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("Ocorreu um erro na comunicacao");
 			}
 		}
 	}
@@ -139,8 +139,6 @@ class ServerThread extends Thread {
 						file.write(bytes, 0, bytesRead);
 						totalBytesRead += bytesRead;
 					}
-//					while (in.available() > 0) // limpar stream depois de transferir ficheiro
-//						in.read(bytes);
 					file.close();
 					AddInfoHandler.add(arg1, image);
 					out.writeUTF(String.format("Vinho %s adicionado com sucesso!", arg1));
