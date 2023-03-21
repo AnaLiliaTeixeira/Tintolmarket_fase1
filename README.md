@@ -60,6 +60,7 @@ A aplicação cliente oferece várias operações que pode executar. Alguns exem
 + `classify <wine> <stars>`: Atribuir uma classificação de 1 a 5 a um vinho específico.
 + `talk <user> <message>`: Enviar uma mensagem privada a outro utilizador.
 + `read`: Ler as novas mensagens recebidas e apresentar a identificação do remetente e a respectiva mensagem.
++ `exit`: Terminar o programa cliente.
 
 ***
 
